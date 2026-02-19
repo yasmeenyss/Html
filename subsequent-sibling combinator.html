@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+div ~ p {
+  background-color: yellow;
+}
+</style>
+<body>
+    <h2>Subsequent-sibling Combinator (~)</h2>
+
+<p>The ~ combinator selects all elements that are next siblings of a specified element.</p>
+<p>The following example selects all p elements that are next siblings of div, and share the same parent:</p>
+
+<p>Paragraph 1.</p>
+<p>Paragraph 5.</p>
+
+<div>
+  <p>Paragraph 2.</p>
+  <p>Paragraph .</p>
+</div>
+
+<p>Paragraph 3.</p>
+<code>Some code.</code>
+<p>Paragraph 4.</p>
+
+</body>
+</html>
