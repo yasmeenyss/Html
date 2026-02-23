@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    div {
+        width: 200px;
+        height: 200px;
+        background-color: green;
+        position: relative;
+        animation-name: myAnimation;
+        animation-duration: 4s;   
+    }
+    @keyframes myAnimation {
+        0% {background-color: brown; right: 2px;
+            top:0px;}
+            25% {background-color: yellow;
+            left: 200px; top: 0px;}
+            50%  {background-color:blue; left:200px; top:200px;}
+  75%  {background-color:green; 
+    left:0px; top:200px;}
+  100% {background-color:red;
+     left:0px; top:0px;}
+    }
+
+</style>
+<body>
+    <h1>yasmeen animation</h1>
+    <div></div>
+    
+</body>
+</html>
