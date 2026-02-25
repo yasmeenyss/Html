@@ -118,3 +118,9 @@ let ml = c ||= 10;
  let min = Math.min(xt);
  let max = Math.max(xt);
 console.log(min+max);
+
+//comparison operator
+ let hcjk3 = "A";
+ let hcjk7 = "b";
+ let results = hcjk3 < hcjk7;
+ console.log(results);
