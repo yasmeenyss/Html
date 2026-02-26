@@ -20,7 +20,10 @@ console.log(c);
 
 let text1 = "john";
 let text2 = "doe";
-let text3 = text1 + " " + text2;
+let fg = "jac";
+let rn = "yasmeen"
+
+let text3 = text1 + " dsd " + string  + text2  +   fg + string + rn +"nn"; // john do
 
 let fn = "operator";
 console.log(fn);
@@ -30,14 +33,17 @@ console.log(text3);
 let text5 = "what a very";
 text5 += "nice day";
 
+
 console.log(text5);
 
 //adding strings and numbers 
 
 let g = 5 + 5;
-let h = "5" + 5;
+let h = "5" + 7;
+console.log("the output is" + h );
 let  k = "hello" + 5;
 
+console.log("yasmeen" );
 console.log( g + h + k);
 
 // comparision operators
@@ -100,27 +106,27 @@ console.log(text);
 
 //Logical AND Assignment Examples If the first value is true, 
 // the second value is assigned.
-let fd = true;
+let fd = false;
  let vg = fd &&= 10;
 
- console.log(vg);
+ console.log("&& "+vg);
 
 // Logical OR assignment
 //first value is false, the second value is assigned.
 
 let mn = true;
-let ml = c ||= 10;
- console.log(ml);
+let ml = mn ||= 10;
+ console.log("|| "+ ml);
 
  //spread operator
  let xt = "12345";
 
  let min = Math.min(xt);
  let max = Math.max(xt);
-console.log(min+max);
+console.log("the min value is"+max);
 
 //comparison operator
- let hcjk3 = "A";
- let hcjk7 = "b";
+ let hcjk3 = "a";
+ let hcjk7 = "n";
  let results = hcjk3 < hcjk7;
  console.log(results);
