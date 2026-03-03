@@ -1,9 +1,9 @@
 //while loop = repeat some code WHILE some condition is true
 
-let username = "";
+let i = 1;
 
-while(username === "") {
-    console.log("you didnt enter your name ");
+while(i<=5);
+{
+     console.log("Hi");
+     i++;
 }
-console.log('Hello ${username}');
-console.log("g")
