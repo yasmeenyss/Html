@@ -32,10 +32,11 @@ console.log(arr);
 
 // add elements in starting or delete the element from first
 
-arr.unshift(10);
+arr.unshift(10); // unshift() method is used to add one or more elements to the beginning of an array and returns the new length of the array.
+
 console.log(arr);
 //delete 
-arr.shift()
+arr.shift() //  removes the first element from an array and returns that element, 
 console.log(arr);
 
 printing array using forlooop
@@ -53,7 +54,7 @@ for(let num of arr) {
 const arr = [10, 30 , 50, 90 ,11];
 console.log(arr.slice(2,4));
 
-spread operator 
+spread operator takes the element one by one down 
 
 const arr = [10,30,50,90,11];
 const arr2 = ["Rohit" , 11 , true];
@@ -61,3 +62,23 @@ const arr4 = [90,4, false];
 
 const arr3 = [...arr,...arr2,...arr4];
 console.log(arr3);
+
+const names = ["Alicee", "Rohit", "Bob ", "Mohit", "Charlie" ,];
+console.log( names.toString());
+console.log(names.join(" -")); // join operation indicates the signs between strings
+console.log(names.lastIndexOf("Bob")); // shows where the element is present
+console.log(names.includes("Bob")); // states wheather it is true or false
+
+names.sort();
+names.reverse();
+
+console.log(names); // arranges the alphabets 
+
+const a = [101 , 90 , 80 , 32 , 91];
+
+a.sort();
+console.log(a); // this sorting is done by the ASCII table 
+
+const a = [10,40,31,71,5,11];
+a.sort((a,b)=> a-b);
+console.log(a); // small to big
