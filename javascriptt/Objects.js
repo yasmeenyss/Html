@@ -64,18 +64,17 @@ const user = {
 console.log(user.age);
 // CRUD operation :create read update delete
 user.aadhar = 1234; // creating
-user.amount = 5000; // updating 
+user.amount = 5000; // updating
 console.log(user);
 
-//deleting 
+//deleting
 delete user.emailId;
 console.log(user);
 
-IMPORTANT 
+IMPORTANT
 console.log(Object.keys(user)); // creates an arrays
-console.log(Object.values(user)); 
+console.log(Object.values(user));
 console.log(Object.entries(user)); // represents key value
-
 
 const user = {
   name: "Rohit",
@@ -83,8 +82,6 @@ const user = {
   emailId: "yasmeen@gmail.com",
   amount: 2400,
 }
-
-
 
 const name = user.name;
 const age = user.age;
@@ -96,19 +93,16 @@ for(let keys of Object.keys(user)){
     console.log(keys);
 }
 
-
-
-
 destructuring object
 const {name,age, amount} = user;
 console.log(name,age , amount);
 
 const arr = [10, 20, 40 ,90, 11];
-const[first,second]= arr; 
+const[first,second]= arr;
 
 console.log(first,second);
 
-creating methods 
+creating methods
 const user = {
   name: "Rohit",
   age: 20,
@@ -131,10 +125,28 @@ const user = {
   age: 20,
   emailId: "yasmeen@gmail.com",
   amount: 2400,
-  address:{
-    city:"Hubli",
-    state:"karnataka"
-
-  }
-}
+  address: {
+    city: "Hubli",
+    state: "karnataka",
+  },
+};
 console.log(user.address.city);
+
+const  user = {
+  name: "yasmeen",
+  age: 21,
+  0: 100,
+  2: "jass"
+
+}
+console.log(user[0]); // this is printed in array form
+
+const sym = Symbol("id");
+const user = {
+    name: "yasmeen",
+    age: 21,
+    0: 100,
+    2: "jass",
+  [sym]:"Hello"
+}
+console.log(user[sym]);// key:string || symbol is used 
