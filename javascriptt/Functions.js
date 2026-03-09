@@ -76,14 +76,64 @@ const addNumber =()=>{
  }
     console.log(addNumber(3,4));
 
-    // this is also used for sorting 
+    this is also used for sorting 
 
     let arr = [20,100,50,80,];
 
     arr.sort((a,b)=>a-b);
     console.log(arr);
+    
 
+    call back function in javascript is function passed as an argument to another function 
+    this allows the receiving function often called a higher order function to execute 
+    passing argument into an arugument 
 
+    function greet(){
+        console.log("Hello how r uh ")
+    }
+    function dance(){
+        console.log("I am dancing ");
+    }
+ 
+    function meet(callback){
+        console.log("am yasmeen");
+        callback();
+        console.log("i have finished meeting");
 
+    }
 
+     meet(greet);
+     meet(dance);
 
+    
+
+zomato
+function zomatoOrderplaced(){
+    console.log("we have started preparing your food");
+
+}
+function payment(amount){
+    console.log('${amount}) payment has initialized')
+    console.log("payment is received ");
+    zomatoOrderplaced()
+}
+payment(500);
+
+blink it
+
+function blinkitOrderplaced(){
+    console.log("we are packing  your order");
+
+}
+ function orderplaced(){
+    console.log("we have started preparing your food");
+
+ }
+
+ function payment(amount,callback){
+ console.log('${amount }payment has initialisd ')
+ console.log("payment is received ");
+ callback();
+ }
+
+payment(300,blinkitOrderplaced);
