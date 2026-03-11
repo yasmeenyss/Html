@@ -49,3 +49,27 @@ console.log(Math.floor(Math.random()*10));
 console.log(Math.floor(Math.random()*10)+1);
 
 console.log(Math.floor(Math.random()*6)+1);
+
+
+15-25
+
+console.log(Math.floor(Math.random()*11)+15)
+Math.floor(Math.random()*(max-min+1))+min
+console.log(Math.floor(Math.random()*(25-15+1))+15)
+console.log(Math.floor(Math.random()*(25-15+1))+15)
+console.log(Math.floor(Math.random()*(25-15+1))+15)
+console.log(Math.floor(Math.random()*(25-15+1))+15)
+console.log(Math.floor(Math.random()*(25-15+1))+15)
+console.log(Math.floor(Math.random()*(25-15+1))+15)
+console.log(Math.floor(Math.random()*(25-15+1))+15)
+console.log(Math.floor(Math.random()*(25-15+1))+15)
+console.log(Math.floor(Math.random()*(25-15+1))+15)
+console.log(Math.floor(Math.random()*(25-15+1))+15)
+
+otp generate 4 digit : 1000-9999
+
+console.log(Math.floor(Math.random()*(9999-1000+1))+1000);
+console.log(Math.floor(Math.random()*(9999-1000+1))+1000);
+console.log(Math.floor(Math.random()*(9999-1000+1))+1000);
+console.log(Math.floor(Math.random()*(9999-1000+1))+1000);
+console.log(Math.floor(Math.random()*(9999-1000+1))+1000);
