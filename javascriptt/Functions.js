@@ -48,6 +48,7 @@
 // spread operator 
 // removes the array and makes the line of numbers plain
 
+
 // const arr = [10,20,30,40,50];
 // const arr2 = [30,70,80,90,10]
 
@@ -88,9 +89,11 @@
 //     this allows the receiving function often called a higher order function to execute 
 //     passing argument into an arugument 
 
-//     function greet(){
-//         console.log("Hello how r uh ")
-//     }
+    function greet(){
+        console.log("Hello how r uh ")
+    }
+
+    greet();
 //     function dance(){
 //         console.log("I am dancing ");
 //     }
@@ -121,19 +124,38 @@
 
 //blink it
 
-function blinkitOrderplaced(){
-    console.log("we are packing  your order");
+// function blinkitOrderplaced(){
+//     console.log("we are packing  your order");
 
-}
- function orderplaced(){
-    console.log("we have started preparing your food");
+// }
+//  function orderplaced(){
+//     console.log("we have started preparing your food");
 
+//  }
+
+//  function payment(amount,callback){
+//  console.log('${amount }payment has initialisd ')
+//  console.log("payment is received ");
+//  callback();
+//  }
+
+// payment(300,blinkitOrderplaced);
+
+const  a  = 30;
+ console.log(a);
+
+ const b = "yasmeen";
+ console.log(b);
+
+
+console.log(typeof(b));
+console.log(typeof(a));
+
+
+ let array  = [10,20,40,60];
+ console.log(array);
+
+ for(let i = 0; i < array.length; i++){
+    console.log(array[i]);
  }
 
- function payment(amount,callback){
- console.log('${amount }payment has initialisd ')
- console.log("payment is received ");
- callback();
- }
-
-payment(300,blinkitOrderplaced);
