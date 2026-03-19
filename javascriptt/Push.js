@@ -44,25 +44,25 @@ MAP : MODIFIES THE ELEMENT AND RETURNS  NEW ARRAY
 
 let nums = [1,2,3,4];
 
-let result = nums.map((num)  => {
+let result = nums.map((num)  =>  {
     return num * 2;
 });
 
 console.log(result);
 
-// another trick 
+another trick 
 
 let num = [1,2,3,];
 let results = num.map(num => num +1);
 console.log(result);
 
-// //map original array ko change nahi karta 
+//map original array ko change nahi karta 
 
-// let yas =[1,2,3];
-// yas.map(yas => yas *2);
-// console.log(yas);
+let yas =[1,2,3];
+yas.map(yas => yas *2);
+console.log(yas);
 
-// FOR EACH :YE BHI ARRAY KA METHOD HAI HAR ELEMENT PE LOOP CHALTA HAI LEKIN KUCH NAHI RETURN KARTA
+FOR EACH :YE BHI ARRAY KA METHOD HAI HAR ELEMENT PE LOOP CHALTA HAI LEKIN KUCH NAHI RETURN KARTA
 
 let jass =[1, 2, 3];
 
@@ -103,3 +103,57 @@ let users =[
 let adults = users.filter(user => user.age > 18);
 
 console.log(adults);
+
+reduce array ke sab values ko use karts hai 1 final value deta    hai 
+jaise sum nikaalna , prodect nikalna , ek object banana , count karna , string join karna
+
+let nums =[1,2,3,4];
+
+let sum =nums.reduce((m,b) => m + b, 0);
+console.log(sum);
+
+multiply 
+
+let nums =[1,2,3,4];
+
+let result = nums.reduce((a,b)=> a*b, 1)
+console.log(result);
+
+sum of even numbers 
+
+let nums = [1,2,3,4 ,5,6];
+
+let sum =nums.reduce((yasmeen,jass) => {
+    if(jass %2 ===0){
+        return yasmeen +jass;
+    }
+    return yasmeen;
+
+}, 0);
+console.log(sum);
+
+array ka largest numbr 
+
+let nums =[10,5,30,2,8];
+
+let max = nums.reduce((a,b) => {
+    if( a>b ){
+        return a;
+
+    }else{
+        return b;
+    }
+});
+console.log(max);
+
+string ko join karna 
+
+let words =["js ", "is", "easy"];
+let result =words.reduce((a,b) => a+ " " + b);
+console.log(result);
+
+let prices = [200,300,150,100];
+
+let total = prices.reduce((a,b) => a + b, 0);
+
+console.log(total);
