@@ -15,6 +15,8 @@ element.innerText = "Hello yasmeen";
 let elements = document.getElementsByClassName("title");
 
 console.log(elements);
+console.log(elements);
+
 
 let elements = document.getElementsByClassName("title");
 elements[1].innerText = "yasmeen";
