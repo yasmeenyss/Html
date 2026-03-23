@@ -3,6 +3,7 @@
 
 let elementt = document.getElementById("title");
 console.log(elementt);
+console.log(elementt);
 
 // changing the text 
 
@@ -20,6 +21,7 @@ console.log(elements);
 
 let elements = document.getElementsByClassName("title");
 elements[1].innerText = "yasmeen";
+
 
 loop use karna 
 
