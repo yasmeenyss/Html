@@ -39,3 +39,63 @@ document.getElementById("card").innerHTML = `
    </div>
 `;
 // button click pe text change 
+
+
+
+// INPUT TYPE DETECT KARNA 
+
+// let input = document.getElementById("input");
+
+// input.addEventListener("input", function(){
+//    console.log("User typing...");
+// });
+
+// show / hide button 
+
+// let p = document.getElementById("text");
+// let btn = document.getElementById("btn");
+
+// btn.addEventListener("click", function() {
+//     p.style.display = "none" ;
+
+// });
+
+
+
+// let YASS = document.getElementById("YASS");
+// let btn = document.getElementById("btn");
+
+// btn.addEventListener("click", function(){
+
+//    let newPara = document.createElement("p");
+//    newPara.innerText = "New Item";
+
+//    let delbtn = document.createElement("button");
+//    delbtn.innerText = "delete";
+
+//    delbtn.addEventListener("click", function(){
+//     newPara.remove();
+//     newPara.remove();
+//    });
+
+//    YASS.appendChild(newPara);
+
+
+//    YASS.appendChild(delbtn);
+
+// });
+
+let input = document.getElementById("inputBox");
+let btn = document.getElementById("addBtn");
+let container = document.getElementById("container");
+
+btn.addEventListener("click", function(){
+
+   let task = input.value;
+
+   let newPara = document.createElement("p");
+   newPara.innerText = task;
+
+   container.appendChild(newPara);
+
+});
