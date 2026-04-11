@@ -1,0 +1,47 @@
+/* button{
+    background-color: red;
+    color: white;
+} */
+
+.box{
+    width: 300px;
+    height: 300px;
+    border: 2px solid black;
+    text-align: center;
+    background-color: aqua;
+    margin-left: 200px;
+    
+}
+
+#box1{
+    height: 100px;
+    width: 100px;
+    background-color: dodgerblue;
+    color: white;
+    border: 1px solid black;
+}
+
+#box2{
+    height: 200px;
+    width: 100px;
+    background-color: dodgerblue;
+    color: white;
+    border: 1px solid black;
+}
+
+.oldclass{
+    color: red;
+}
+
+.newclass{
+    background-color: green;
+}
+
+.red{
+    color:red;
+}
+
+.dark{
+    background-color: black;
+    color: white;
+}
