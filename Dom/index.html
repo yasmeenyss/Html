@@ -30,6 +30,16 @@
 <input type="text" id="inputBox" placeholder="Enter task">
 <button id="addBtn">Add Task</button>
 
+<br><br>
+
+<input type="text" id="searchBox" placeholder="search task">
+
+<br><br>
+<button onclick="filterTasks('all')">All</button>
+<button onclick="filterTasks('completed')">completed</button>
+<button onclick="filterTasks('pending')">pending</button>
+
+
 <div id="container"></div>
 
 <script src="app.js"></script>

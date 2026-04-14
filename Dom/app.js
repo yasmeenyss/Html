@@ -210,30 +210,138 @@
 
 // upgrade todo app
 
+// let input = document.getElementById("inputBox");
+// let btn = document.getElementById("addBtn");
+// let container = document.getElementById("container");
+
+// // अब task object me save karenge
+// let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+// // Load tasks
+// function loadTasks() {
+//     container.innerHTML = "";
+
+//     tasks.forEach(function(taskObj, index) {
+
+//         let taskDiv = document.createElement("div");
+
+//         let taskText = document.createElement("span");
+//         taskText.innerText = taskObj.text;
+
+//         // अगर completed hai
+//         if (taskObj.completed) {
+//             taskText.style.textDecoration = "line-through";
+//         }
+
+//         // ✅ Done button
+//         let doneBtn = document.createElement("button");
+//         doneBtn.innerText = "Done";
+
+//         doneBtn.addEventListener("click", function () {
+//             tasks[index].completed = !tasks[index].completed;
+//             localStorage.setItem("tasks", JSON.stringify(tasks));
+//             loadTasks();
+//         });
+
+//         // ✏️ Edit button
+//         let editBtn = document.createElement("button");
+//         editBtn.innerText = "Edit";
+
+//         editBtn.addEventListener("click", function () {
+//             let newText = prompt("Edit task:", taskObj.text);
+//             if (newText !== null && newText.trim() !== "") {
+//                 tasks[index].text = newText;
+//                 localStorage.setItem("tasks", JSON.stringify(tasks));
+//                 loadTasks();
+//             }
+//         });
+
+//         // 🗑 Delete button
+//         let delBtn = document.createElement("button");
+//         delBtn.innerText = "Delete";
+
+//         delBtn.addEventListener("click", function () {
+//             tasks.splice(index, 1);
+//             localStorage.setItem("tasks", JSON.stringify(tasks));
+//             loadTasks();
+//         });
+
+//         taskDiv.appendChild(taskText);
+//         taskDiv.appendChild(doneBtn);
+//         taskDiv.appendChild(editBtn);
+//         taskDiv.appendChild(delBtn);
+
+//         container.appendChild(taskDiv);
+//     });
+// }
+
+// // Add task
+// function addTask() {
+//     let task = input.value;
+
+//     if (task.trim() === "") {
+//         alert("Enter task");
+//         return;
+//     }
+
+//     tasks.push({
+//         text: task,
+//         completed: false
+//     });
+
+//     localStorage.setItem("tasks", JSON.stringify(tasks));
+
+//     input.value = "";
+//     loadTasks();
+// }
+
+// // Events
+// btn.addEventListener("click", addTask);
+
+// input.addEventListener("keydown", function (e) {
+//     if (e.key === "Enter") {
+//         addTask();
+//     }
+// });
+
+// loadTasks();
+
 let input = document.getElementById("inputBox");
 let btn = document.getElementById("addBtn");
 let container = document.getElementById("container");
+let searchBox = document.getElementById("searchBox");
 
-// अब task object me save karenge
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+let currentFilter = "all";
 
 // Load tasks
 function loadTasks() {
     container.innerHTML = "";
 
+    let searchText = searchBox.value.toLowerCase();
+
     tasks.forEach(function(taskObj, index) {
 
+        // 🔍 Search filter
+        if (!taskObj.text.toLowerCase().includes(searchText)) return;
+
+        // 🎯 Status filter
+        if (currentFilter === "completed" && !taskObj.completed) return;
+        if (currentFilter === "pending" && taskObj.completed) return;
+
         let taskDiv = document.createElement("div");
+        taskDiv.style.margin = "5px";
+        taskDiv.style.padding = "5px";
+        taskDiv.style.border = "1px solid gray";
 
         let taskText = document.createElement("span");
         taskText.innerText = taskObj.text;
 
-        // अगर completed hai
         if (taskObj.completed) {
             taskText.style.textDecoration = "line-through";
         }
 
-        // ✅ Done button
+        // Done
         let doneBtn = document.createElement("button");
         doneBtn.innerText = "Done";
 
@@ -243,20 +351,7 @@ function loadTasks() {
             loadTasks();
         });
 
-        // ✏️ Edit button
-        let editBtn = document.createElement("button");
-        editBtn.innerText = "Edit";
-
-        editBtn.addEventListener("click", function () {
-            let newText = prompt("Edit task:", taskObj.text);
-            if (newText !== null && newText.trim() !== "") {
-                tasks[index].text = newText;
-                localStorage.setItem("tasks", JSON.stringify(tasks));
-                loadTasks();
-            }
-        });
-
-        // 🗑 Delete button
+        // Delete
         let delBtn = document.createElement("button");
         delBtn.innerText = "Delete";
 
@@ -268,7 +363,6 @@ function loadTasks() {
 
         taskDiv.appendChild(taskText);
         taskDiv.appendChild(doneBtn);
-        taskDiv.appendChild(editBtn);
         taskDiv.appendChild(delBtn);
 
         container.appendChild(taskDiv);
@@ -295,15 +389,20 @@ function addTask() {
     loadTasks();
 }
 
+// Filter function
+function filterTasks(type) {
+    currentFilter = type;
+    loadTasks();
+}
+
 // Events
 btn.addEventListener("click", addTask);
 
 input.addEventListener("keydown", function (e) {
-    if (e.key === "Enter") {
-        addTask();
-    }
+    if (e.key === "Enter") addTask();
 });
 
-loadTasks();
+searchBox.addEventListener("input", loadTasks);
 
+loadTasks();
 
