@@ -1,0 +1,32 @@
+/* #box {
+    width: 200px;
+    height: 200px;
+    background-color: blue;
+    color: white;
+    display: flex;
+    align-items: centre;
+    justify-content: center;
+    margin: 50px auto;
+    font-size: 18px;
+    cursor: pointer;
+} */
+
+body {
+    font-family: Arial;
+    text-align: center;
+    margin-top: 50px;
+}
+
+input {
+    padding: 10px;
+    width: 200px;
+    margin: 10px;
+}
+
+button {
+    padding: 10px 20px;
+    background: blue;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
