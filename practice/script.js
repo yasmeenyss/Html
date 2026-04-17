@@ -1,43 +1,43 @@
-// let btn = document.getElementById("btn");
+let btn = document.getElementById("btn");
 
-// btn.addEventListener("click", () => {
-//   console.log("Button clicked");
-// });
+btn.addEventListener("click", () => {
+  console.log("Button clicked");
+});
 
 
-// // submit 
+// submit 
 
-// let form = document.getElementById("my form");
-// let name = document.getElementById("name");
+let form = document.getElementById("my form");
+let name = document.getElementById("name");
 
-// form.addEventListener("submit" , (f) => {
-//     f.preventDefault();
-//     console.log("Name:", name.value);
-// });
+form.addEventListener("submit" , (f) => {
+    f.preventDefault();
+    console.log("Name:", name.value);
+});
 
-// mouseover
+mouseover
 
-  // let box = document.getElementById("box");
+  let box = document.getElementById("box");
 
-  // box.addEventListener("mouseover", function () {
-  //   box.style.background = "red";
-  // });
+  box.addEventListener("mouseover", function () {
+    box.style.background = "red";
+  });
 
-// input 
+input 
 
-// let input = document.getElementById("name");
+let input = document.getElementById("name");
 
-// input.addEventListener("input" , () => {
-//   console.log(input.value);
-// });
+input.addEventListener("input" , () => {
+  console.log(input.value);
+});
 
-// key down
+key down
 
-// let input = document.getElementById("inputbox");
+let input = document.getElementById("inputbox");
 
-//   input.addEventListener("keydown", (e) => {
-//     console.log( e.key);
-//   });
+  input.addEventListener("keydown", (e) => {
+    console.log( e.key);
+  });
 
 let form = document.getElementById("my form");
 let input = document.getElementById("name");
@@ -47,7 +47,7 @@ let output = document.getElementById("output");
 // input event (real time typing )
 
 input.addEventListener("input", () => {
-  output.textContent = "typing:" + input.ariaValueMax;
+  output.textContent = "typing:" + input.Value;
 
 });
 
@@ -76,3 +76,45 @@ form.addEventListener("submit", (e) => {
  e.preventDefault();
  output.textContent = "submitted:" + input.value;
 });
+
+call back function
+
+function greet(name, callback) {
+  document.getElementById("output").innerText = "Hello" + name;
+  callback();
+}
+
+function done() {
+  console.log("callback executed");
+
+}
+
+function start() {
+  greet("yasss", done);
+}
+
+call back simple 
+
+function greet(name, callback) {
+  console.log("hello" + name);
+ callback();
+}
+
+function bye() {
+  console.log("bye");
+}
+greet("yass",  bye);
+
+  let promise = new Promise((resolve, reject) => {
+  let success = false;
+
+  if (success) {
+    resolve("Data has found");
+  } else {
+    reject("error has occured");
+  }
+});
+
+promise
+  .then((res) => console.log(res))
+  .catch((err) => console.log(err));
