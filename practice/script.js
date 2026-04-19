@@ -1,8 +1,8 @@
-let btn = document.getElementById("btn");
+// let btn = document.getElementById("btn");
 
-btn.addEventListener("click", () => {
-  console.log("Button clicked");
-});
+// btn.addEventListener("click", () => {
+//   console.log("Button clicked");
+// });
 
 
 // submit 
@@ -118,3 +118,68 @@ greet("yass",  bye);
 promise
   .then((res) => console.log(res))
   .catch((err) => console.log(err));
+
+promise chaining 
+
+let promise = new Promise((resolve, reject) => {
+  resolve(60);
+});
+
+promise
+.then((res) => {
+  console.log(res); // 10 
+  return res +5;
+})
+.then((res) => {
+  console.log(res); //15
+  return res *2
+})
+.then((res) => {
+  console.log(res); //30
+})
+.catch((err) => {
+  console.log(err);
+});
+
+Async 
+
+
+async function getusers() {
+  try {
+    console.log("fetching data.....");
+
+    let res = await fetch("https://jsonplaceholder.typicode.com/users");
+    let data = await res.json();
+
+    console.log("Data has found:");
+    console.log(data);
+
+    console.log("First users:");
+    console.log(data[0].name);
+
+  } catch (error) {
+    console.log("error aaya:", error);
+  }
+}
+
+ getusers();
+
+
+async function getUsers() {
+  try {
+    console.log("1. Start");
+
+    let res = await fetch("https://jsonplaceholder.typicode.com/users");
+    console.log("2. Response received", res);
+
+    let data = await res.json();
+    console.log("3. Data:", data);
+
+    console.log("4. First user:", data[0].name);
+
+  } catch (error) {
+    console.log("Error:", error);
+  }
+}
+
+getUsers();
