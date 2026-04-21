@@ -225,3 +225,80 @@ fetch("https://jsonplaceholder.typicode.com/users")
   .then((res) => res.json())
   .then((data) => console.log(data))
   .catch((err) => console.log(err));
+
+
+// GET 
+
+fetch("https://jsonplaceholder.typicode.com/users")
+.then(res => res.json())
+.then(data => console.log(data));
+
+//post 
+
+fetch("https://jsonplaceholder.typicode.com/users" , {
+  method: "post",
+  headers: {
+    "content-Type": "application/json"
+
+  },
+  body: JSON.stringify({
+    name: "yasmeen",
+    age: 22
+  
+  })
+})
+.then(res => res.json())
+.then(data => console.log(data))
+.catch(err => console.log("Error:", err));
+
+// JSON 
+fetch("data.json")
+.then(res => res.json())
+.then(data => console.log(data));
+
+//JSON STRINGIFY
+let user = {name: "elina"};
+let datajson  = JSON.stringify(user);
+
+console.log(datajson);
+
+//JSON PARSE
+let data = '{"name": "elina"}';
+
+let obj = JSON.parse(data);
+console.log(obj.name);
+
+fetch("https://jsonplaceholder.typicode.com/users")
+  .then(res => res.json()) // JSON → JS object
+  .then(data => console.log(data));
+
+  fetch("data.json")
+  .then(res => res.json())
+  .then(data => console.log(data.product));
+
+  // header 
+  fetch("https://jsonplaceholder.typicode.com/users", {
+     method: "POST",
+     headers: {
+      "content-Type": "application/json"
+     },
+     body: JSON.stringify({
+      name: "yass"
+      
+     })
+  })
+  .then(res => res.json())
+.then(data => {
+  console.log("Response:", data);
+})
+.catch(err => console.log("Error:", err));
+
+// authorization 
+
+fetch("https://jsonplaceholder.typicode.com/users", {
+  headers: {
+    "Authorization": "Bearer token123"
+  }
+})
+.then(res => res.json())
+.then(data => console.log(data));``
