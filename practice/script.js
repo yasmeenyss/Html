@@ -184,27 +184,27 @@
 
 // getUsers();
 
-//try aur catch 
+// try aur catch 
 
 
-try {
-  console.log("start");
-  let a = b + 10; 
+// try {
+//   console.log("start");
+//   let a = b + 10; 
 
-} catch (error) {
-  console.log("Error aaya:", error);
-}
+// } catch (error) {
+//   console.log("Error aaya:", error);
+// }
 
-try {
-  let age = 56;
+// try {
+//   let age = 56;
 
-  if (age < 18) {
-    throw "you are underage";
-  }
-  console.log("Acess granted");
-} catch (error) {
-  console.log("Error:", error);
-}
+//   if (age < 18) {
+//     throw "you are underage";
+//   }
+//   console.log("Acess granted");
+// } catch (error) {
+//   console.log("Error:", error);
+// }
 
 // fetch()
 
@@ -301,4 +301,125 @@ fetch("https://jsonplaceholder.typicode.com/users", {
   }
 })
 .then(res => res.json())
-.then(data => console.log(data));``
+.then(data => console.log(data));
+
+// status code 
+
+fetch("https://jsonplaceholder.typicode.com/users")
+.then(res => {
+  console.log(res.status);
+  return res.json();
+
+})
+.then(data => console.log(data));
+
+// 400 code 
+fetch("https://jsonplaceholder.typicode.com/users/invalid")
+  .then(res => {
+    console.log("Status:", res.status);
+
+    if (!res.ok) {
+      console.log("Error aaya hai bhai ❌");
+    }
+
+    return res.json();
+  })
+  .then(data => console.log(data))
+  .catch(err => console.log("Network Error:", err));
+
+  //201
+
+  fetch("https://jsonplaceholder.typicode.com/users", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    name: "Mehatab"
+  })
+})
+.then(res => {
+  console.log(res.status); // 👈 yaha dekh
+  return res.json();
+})
+.then(data => console.log(data));
+
+// 401 
+fetch("https://api.com/profile")
+  .then(res => {
+    console.log(res.status); // 401
+    return res.json();
+  })
+  .then(data => console.log(data));
+
+  // 404
+
+  fetch("https://jsonplaceholder.typicode.com/unknown")
+  .then(res => {
+    console.log(res.status); // 404
+    return res.json();
+  })
+  .then(data => console.log(data));
+
+  // 500
+  fetch("https://api.com/users")
+  .then(res => {
+    console.log(res.status); // 500
+    return res.json();
+  })
+  .then(data => console.log(data));
+
+
+  / advanced java 
+  closures
+
+  function outer() {
+    let count = 0;
+
+    function inner() {
+      count++;
+      console.log(count);
+    }
+    return inner;
+  }
+
+  const myFunc = outer();
+  myFunc(); //1 
+  myFunc(); //2
+  myFunc(); //3 
+
+  // DATA HIDING
+
+  function bankAccount() {
+    let balance = 1000;
+
+    return {
+      deposit: function(amount) {
+        balance += amount;
+        console.log(balance);
+
+      },
+      getBalance: function() {
+        console.log(balance);
+      }
+    };
+  }
+  const account = bankAccount();
+
+  account.deposit(500); // 1500
+  account.getBalance(); //1500
+
+  // settime out 
+  for (var i = 1; i <= 3; i++) {
+  setTimeout(function() {
+    console.log(i);
+  }, 1000);
+}
+// fix using closure 
+for (var i = 1; i <= 3; i++) {
+  (function(x) {
+    setTimeout(function() {
+      console.log(x);
+    }, 1000);
+  })(i);
+}
