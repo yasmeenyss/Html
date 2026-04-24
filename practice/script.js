@@ -495,3 +495,173 @@ function outer() {
   inner();
 }
 outer();
+
+function outer() {
+  let count = 0;
+
+  return function() {
+    count++;
+    console.log(count);
+  }
+}
+
+let counter = outer();
+counter(); // 1
+counter(); // 2
+
+// this keyword
+// inside object
+
+const user = {
+  name: "yasmeen",
+  greet: function() {
+    console.log(this.name);
+
+  }
+};
+user.greet();
+
+const car = {
+  brand: "BMW",
+  showbrand: function() {
+    console.log(this.brand);
+  }
+}
+car.showbrand();
+
+// global (normal function )
+
+function show() {
+  console.log(this);
+
+}
+show();
+
+//inside method vs normal function
+
+const person = {
+  name: "Ali",
+  greet: function(){
+    console.log(this.name);
+
+  }
+}
+person.greet();
+
+const yass = {
+  home: "Ews - 372",
+  jasmeen: function(){
+    console.log(this.home);
+
+  }
+}
+yass.jasmeen();
+
+// Arrow function
+
+// const user = {
+//   yasmeen:"cat",
+
+//   frog: () => {
+//     console.log(this.yasmeen);
+//   }
+
+// }
+// user.frog();
+
+// const user = {
+//  name:"Mehatab",
+
+//  greet: () => {
+//    console.log(this.name);
+//  }
+// }
+
+// user.greet();
+
+
+// CALLBACKS 
+
+function hello() {
+  console.log("Hello");
+}
+function greet(callback){
+  callback();
+}
+greet(hello);
+
+function yasmeen() {
+  console.log("My name is yasmeen");
+
+}
+function smoky(callback){
+  callback();
+}
+smoky(yasmeen);
+
+function cookfood(callback){
+  console.log("cooking...");
+  callback();
+
+}
+function eat(){
+  console.log("eating");
+}
+cookfood(eat);
+
+// set time out
+
+setTimeout(function(){
+  console.log("4 sec ke baad");
+},4000);
+
+
+function cat(callback){
+  console.log("cat is eating..");
+  callback();
+}
+function tiger(){
+  console.log("tiger is dancing..");
+}
+
+function elephant(){
+  console.log("elephant is running..");
+}
+
+cat(tiger,elephant);
+cat(elephant);
+
+// synchronous call back
+// const user = {
+//  name:"Mehatab",
+
+//  greet: () => {
+//    console.log(this.name);
+//  }
+// }
+
+// user.greet();
+
+// login(function(){
+//  getProfile(function(){
+//    getPosts(function(){
+//       console.log("Done");
+//    });
+//  });
+// });
+
+// let a = 10;
+
+// function greet(){
+//  let b = 20;
+//  console.log("Hello");
+// }
+
+// greet();
+
+// DESTRUCTURING 
+
+const arr = [10, 20, 30];
+
+const a = arr[0];
+const b = arr[1];
