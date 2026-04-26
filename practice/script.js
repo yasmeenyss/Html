@@ -426,136 +426,136 @@
 
 //  function Hoisting
 
-sayHi();
+// sayHi();
 
-function sayHi() {
-  console.log("hello yasmeen ");
-}
+// function sayHi() {
+//   console.log("hello yasmeen ");
+// }
 
-// var hoisting
-console.log(x); // undefined
-var x = 5;
+// // var hoisting
+// console.log(x); // undefined
+// var x = 5;
 
-var x;
-console.log(x); // undefined
-x = 5;
+// var x;
+// console.log(x); // undefined
+// x = 5;
 
-// let and  const 
+// // let and  const 
 
-// console.log(y); // ❌ ReferenceError
-// let y = 10;
+// // console.log(y); // ❌ ReferenceError
+// // let y = 10;
 
-// scope 
-// global scope 
+// // scope 
+// // global scope 
 
- var a = 10;
+//  var a = 10;
 
- function show() {
-  console.log(a);
- }
- show();
-
- // function scope
-
-//  function test() {
-//   var b = 20;
-//   console.log(b);
+//  function show() {
+//   console.log(a);
 //  }
+//  show();
 
-//  test();
-//  console.log(b);
+//  // function scope
 
- //block scope 
+// //  function test() {
+// //   var b = 20;
+// //   console.log(b);
+// //  }
 
- if(true) {
-  let x = 5;
-  console.log(x);
+// //  test();
+// //  console.log(b);
 
- }
- console.log(x);
+//  //block scope 
 
- // var
+//  if(true) {
+//   let x = 5;
+//   console.log(x);
 
- if (true) {
-  var z = 100;
+//  }
+//  console.log(x);
 
- }
- console.log(z);
+//  // var
+
+//  if (true) {
+//   var z = 100;
+
+//  }
+//  console.log(z);
 
 
-// lexical  scope 
+// // lexical  scope 
 
-function outer() {
-  let name = "yasss";
+// function outer() {
+//   let name = "yasss";
 
-  function inner() {
-    console.log(name);
-  }
+//   function inner() {
+//     console.log(name);
+//   }
 
-  inner();
-}
-outer();
+//   inner();
+// }
+// outer();
 
-function outer() {
-  let count = 0;
+// function outer() {
+//   let count = 0;
 
-  return function() {
-    count++;
-    console.log(count);
-  }
-}
+//   return function() {
+//     count++;
+//     console.log(count);
+//   }
+// }
 
-let counter = outer();
-counter(); // 1
-counter(); // 2
+// let counter = outer();
+// counter(); // 1
+// counter(); // 2
 
-// this keyword
-// inside object
+// // this keyword
+// // inside object
 
-const user = {
-  name: "yasmeen",
-  greet: function() {
-    console.log(this.name);
+// const user = {
+//   name: "yasmeen",
+//   greet: function() {
+//     console.log(this.name);
 
-  }
-};
-user.greet();
+//   }
+// };
+// user.greet();
 
-const car = {
-  brand: "BMW",
-  showbrand: function() {
-    console.log(this.brand);
-  }
-}
-car.showbrand();
+// const car = {
+//   brand: "BMW",
+//   showbrand: function() {
+//     console.log(this.brand);
+//   }
+// }
+// car.showbrand();
 
-// global (normal function )
+// // global (normal function )
 
-function show() {
-  console.log(this);
+// function show() {
+//   console.log(this);
 
-}
-show();
+// }
+// show();
 
 //inside method vs normal function
 
-const person = {
-  name: "Ali",
-  greet: function(){
-    console.log(this.name);
+// const person = {
+//   name: "Ali",
+//   greet: function(){
+//     console.log(this.name);
 
-  }
-}
-person.greet();
+//   }
+// }
+// person.greet();
 
-const yass = {
-  home: "Ews - 372",
-  jasmeen: function(){
-    console.log(this.home);
+// const yass = {
+//   home: "Ews - 372",
+//   jasmeen: function(){
+//     console.log(this.home);
 
-  }
-}
-yass.jasmeen();
+//   }
+// }
+// yass.jasmeen();
 
 // Arrow function
 
@@ -582,54 +582,54 @@ yass.jasmeen();
 
 // CALLBACKS 
 
-function hello() {
-  console.log("Hello");
-}
-function greet(callback){
-  callback();
-}
-greet(hello);
+// function hello() {
+//   console.log("Hello");
+// }
+// function greet(callback){
+//   callback();
+// }
+// greet(hello);
 
-function yasmeen() {
-  console.log("My name is yasmeen");
+// function yasmeen() {
+//   console.log("My name is yasmeen");
 
-}
-function smoky(callback){
-  callback();
-}
-smoky(yasmeen);
+// }
+// function smoky(callback){
+//   callback();
+// }
+// smoky(yasmeen);
 
-function cookfood(callback){
-  console.log("cooking...");
-  callback();
+// function cookfood(callback){
+//   console.log("cooking...");
+//   callback();
 
-}
-function eat(){
-  console.log("eating");
-}
-cookfood(eat);
+// }
+// function eat(){
+//   console.log("eating");
+// }
+// cookfood(eat);
 
-// set time out
+// // set time out
 
-setTimeout(function(){
-  console.log("4 sec ke baad");
-},4000);
+// setTimeout(function(){
+//   console.log("4 sec ke baad");
+// },4000);
 
 
-function cat(callback){
-  console.log("cat is eating..");
-  callback();
-}
-function tiger(){
-  console.log("tiger is dancing..");
-}
+// function cat(callback){
+//   console.log("cat is eating..");
+//   callback();
+// }
+// function tiger(){
+//   console.log("tiger is dancing..");
+// }
 
-function elephant(){
-  console.log("elephant is running..");
-}
+// function elephant(){
+//   console.log("elephant is running..");
+// }
 
-cat(tiger,elephant);
-cat(elephant);
+// cat(tiger,elephant);
+// cat(elephant);
 
 // synchronous call back
 // const user = {
@@ -659,9 +659,159 @@ cat(elephant);
 
 // greet();
 
-// DESTRUCTURING 
+// DESTRUCTURING old way 
 
-const arr = [10, 20, 30];
+const bnc = {
+  name: "sweetie",
+  age: 29
+};
+console.log(bnc.name);
+console.log(bnc.age);
 
-const a = arr[0];
-const b = arr[1];
+// new version og object destructing 
+
+const abc = {
+  name: "yass",
+  age: 21
+};
+const {name, age } = abc;
+console.log(name);
+console.log(age);
+
+// Array destructuring (old version)
+const colors = ["red", "green", "blue"];
+
+console.log(colors[0]);
+console.log(colors[1]);
+console.log(colors[2]);
+
+// Array destructuring ( new version)
+
+const col =["pink", "white", "yellow"];
+const [first, second , third] = col;
+
+console.log(first);
+console.log(second);
+console.log(third);
+
+// skip values 
+
+const numbers = [10 , 20 , 30 ];
+
+const [ a , b ] = numbers;
+console.log(a );
+console.log(b);
+
+// default values
+
+const jass = {
+  nam: "jasmine "
+
+};
+ const { nam , afc  = 25} = UserActivation;
+
+ console.log(afc); 
+
+ // real interview  questiion
+
+ const response = {
+  data: {
+    use: {
+      id: 2,
+      mi: " smoky"
+    }
+  }
+ };
+ const { data: { use: {mi} } } = response;
+
+console.log(mi);
+
+// spread operator 
+
+const heart = [1,4,5];
+
+const nri = [...heart];
+console.log(nri);
+
+// merging arrys
+
+const c = [6,7];
+const d = [8,9];
+const result = [...c, ...d];
+console.log(result);
+
+// copy array 
+
+const arr1 =[20,40];
+const arr2 = [...arr1];
+
+
+arr2.push(30);
+
+console.log(arr2);
+// [10,20,30] 
+
+// spread in objects
+
+const yx = {
+  jk: "kle",
+  ge: 23
+};
+const lk = {...yx};
+console.log(lk);
+
+// merging the objects
+
+const bn = {
+  nm: "hv"
+
+};
+const extra = {
+  city: "hubli"
+
+};
+
+const profile = {
+  ...bn,
+  ...extra
+};
+console.log(profile);
+
+// update object
+
+const ayra = {
+ air:"Meha",
+ global:22
+};
+
+const updatedayra = {
+ ...ayra,
+ global:27
+};
+
+// function  argument
+
+// const nums = [10,20,30];
+
+// // console.log(...nums);
+
+// Math.max(5,9,2)
+// console.log(...max);
+
+const nums = [20,50,10];
+
+console.log(Math.max(...nums));
+
+// update 
+
+const ruby ={
+  ysl: "tani",
+  brown:24
+};
+const updated = {
+  ...ruby,
+  brown:28
+}
+
+console.log(updated);
+
