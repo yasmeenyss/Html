@@ -815,3 +815,57 @@ const updated = {
 
 console.log(updated);
 
+// template literals (basic syntax)
+
+const hulk = "Alex";
+const message = 'Hello, ${hulk}!';
+console.log(message);
+
+// Expression inside 
+const n = 5;
+const j = 10;
+
+console.log(`Sum: ${n + j}`); // Sum: 15
+
+//function calls
+
+function greet(name) {
+  return 'Hi,  ${name}';
+
+}
+console.log('${greet("sam")} ');
+
+
+// tag template
+
+function tag(strings, ...values) {
+  console.log(strings);
+  console.log(values);
+}
+
+tag`Hello ${"John"}, you are ${25} years old`;
+
+
+let product = "Laptop";
+let price = 50000;
+
+console.log(`${product} price is ${price}`);
+
+
+// modules 
+
+// function add(a,b){
+//  return a+b;
+// }
+
+// export default add;
+
+// import add from "./math.js";
+
+// console.log(add(2,3));
+
+// export const name="Ali";
+
+// export function greet(){
+//  console.log("Hi");
+// }
