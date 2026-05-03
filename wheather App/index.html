@@ -49,7 +49,6 @@
                  </div>
         </div>
      </div>
-    </div>
 </div>
 
 <script>
@@ -68,7 +67,7 @@
 
        const response = await fetch(`${apiUrl}${city}&appid=${apikey}`);
 
-       if(response.status ==400){
+       if(response.status == 400){
         document.querySelector(".error").style.display = "block";
         document.querySelector(".weather").style.display = "none";
        }else{
@@ -80,7 +79,7 @@
 
     
 
-    if(data.cod=="404"){
+    if(data.cod == "404"){
 alert("City not found");
 return;
 }

@@ -79,3 +79,11 @@ button {
     margin: 6px 0;
     border-radius: 4px;
 }
+
+.list li.plus {
+    border-color: green;
+}
+
+.list li.minus {
+    border-color: red;
+}
