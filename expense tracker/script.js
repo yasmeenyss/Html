@@ -39,5 +39,43 @@ function addtransactionDOM(transaction) {
     <button on click="removeTransaction(${useTransition.id}">x</button>)
     
     `;
+
+    list.appendChild(item);
+}
+
+//update balance, income and expense 
+
+function updatevalues(){
+    const amounts =  transactions.map((t) => t.amount);
+    const total = amounts
+    .reduce((previous, next) => previous + next, 0)
+    .tobeFixed(2);
+    const income = amounts
+    .filter((item) => item > 0)
+    .reduce((previous, next) => previous + next, 0)
+    .toFixed(2);
+    const expense = (
+    amounts
+    .filter((item) => item < 0)
+    .reduce((previous, next) =>  previous  + next, 0)* -1
+    ).tobeFixed(2);
+
+    balance.innerHTML = `$${total}`;
+    money_plus.innerText = `$${income}`;
+    money_minus.innerText = `$${expense}`;
+
+}
+
+// remove Transaction 
+
+function removeTransaction(id) {
+    transaction = transaction.filter(t => t.id === id);
+    updatelocalstorage();
+    init();
+
+}
+// update local storage
+function updateLocalstorage() {
+    
 }
 
