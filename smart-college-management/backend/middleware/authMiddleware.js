@@ -1,27 +1,31 @@
+
 const jwt = require("jsonwebtoken");
 
 const protect = (req, res, next) => {
-  try {
-    const authHeader = req.headers.authorization;
+try {
+const authHeader = req.headers.authorization;
 
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return res.status(401).json({
-        message: "Not authorized. No token provided.",
-      });
-    }
 
-    const token = authHeader.split(" ")[1];
+if (!authHeader || !authHeader.startsWith("Bearer ")) {
+  return res.status(401).json({
+    message: "Not authorized. No token provided.",
+  });
+}
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+const token = authHeader.split(" ")[1];
 
-    req.user = decoded;
+const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    next();
-  } catch (error) {
-    return res.status(401).json({
-      message: "Not authorized. Invalid or expired token.",
-    });
-  }
+req.user = decoded;
+
+return next();
+
+
+} catch (error) {
+return res.status(401).json({
+message: "Not authorized. Invalid or expired token.",
+});
+}
 };
 
 module.exports = protect;
