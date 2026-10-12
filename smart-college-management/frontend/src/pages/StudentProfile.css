@@ -1,0 +1,149 @@
+.profile-page {
+  min-height: 100vh;
+  padding: 35px;
+  background: #f1f5f9;
+}
+
+.profile-banner {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  padding: 35px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #312e81, #6366f1);
+  color: white;
+  margin-bottom: 25px;
+  box-shadow: 0 12px 28px rgba(49, 46, 129, 0.18);
+}
+
+.profile-avatar {
+  width: 85px;
+  height: 85px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.16);
+  border-radius: 22px;
+  font-size: 42px;
+}
+
+.profile-eyebrow {
+  font-size: 12px;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+  color: #c7d2fe;
+}
+
+.profile-banner h1 {
+  text-align: left;
+  color: white;
+  font-size: 30px;
+  margin-bottom: 8px;
+}
+
+.profile-banner p:last-child {
+  color: #e0e7ff;
+}
+
+.profile-details-card {
+  padding: 30px;
+  border-radius: 18px;
+  background: white;
+  box-shadow: 0 5px 20px rgba(15, 23, 42, 0.05);
+}
+
+.profile-section-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 25px;
+}
+
+.profile-section-title h2 {
+  margin: 0;
+  color: #1e293b;
+}
+
+.profile-section-title span {
+  color: #4338ca;
+  background: #eef2ff;
+  padding: 8px 13px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.profile-details-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.profile-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  padding: 18px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  overflow-wrap: anywhere;
+}
+
+.profile-detail span {
+  color: #64748b;
+  font-size: 13px;
+}
+
+.profile-detail strong {
+  color: #1e293b;
+  font-size: 15px;
+}
+
+.profile-note {
+  text-align: center;
+  color: #64748b;
+  font-size: 13px;
+  margin-top: 20px;
+}
+
+.profile-message {
+  padding: 30px;
+  margin: 25px;
+  border-radius: 12px;
+  background: white;
+  color: #334155;
+}
+
+.profile-error {
+  color: #b91c1c;
+}
+
+@media (max-width: 600px) {
+  .profile-page {
+    padding: 18px;
+  }
+
+  .profile-banner {
+    padding: 24px;
+    gap: 15px;
+  }
+
+  .profile-avatar {
+    width: 60px;
+    height: 60px;
+    font-size: 30px;
+  }
+
+  .profile-banner h1 {
+    font-size: 23px;
+  }
+
+  .profile-details-card {
+    padding: 20px;
+  }
+
+  .profile-details-grid {
+    grid-template-columns: 1fr;
+  }
+}
