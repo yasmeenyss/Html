@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./App.css";
 import StudentProfile from "./pages/StudentProfile";
+import Attendance from "./pages/Attendance";
 
 function App() {
   const [email, setEmail] = useState("");
@@ -10,6 +11,7 @@ function App() {
   );
   const [error, setError] = useState("");
   const [showProfile, setShowProfile] = useState(false);
+  const [showAttendance, setShowAttendance] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const handleLogin = async (e) => {
@@ -50,6 +52,7 @@ function App() {
 
       setUser(loggedInUser);
       setShowProfile(false);
+      setShowAttendance(false);
     } catch (err) {
       console.error("Login error:", err);
       setError(
@@ -68,6 +71,7 @@ function App() {
     setEmail("");
     setPassword("");
     setShowProfile(false);
+    setShowAttendance(false);
     setError("");
   };
 
@@ -77,11 +81,31 @@ function App() {
     if (showProfile && dashboardRole === "student") {
       return (
         <div className="profile-screen">
-          <button className="back-button" onClick={() => setShowProfile(false)}>
+          <button
+            type="button"
+            className="back-button"
+            onClick={() => setShowProfile(false)}
+          >
             ← Back to Dashboard
           </button>
 
           <StudentProfile />
+        </div>
+      );
+    }
+
+    if (showAttendance && dashboardRole === "student") {
+      return (
+        <div className="profile-screen">
+          <button
+            type="button"
+            className="back-button"
+            onClick={() => setShowAttendance(false)}
+          >
+            ← Back to Dashboard
+          </button>
+
+          <Attendance />
         </div>
       );
     }
@@ -100,7 +124,11 @@ function App() {
           <div className="header-actions">
             <span className="role-badge">{dashboardRole || "User"}</span>
 
-            <button className="logout-button" onClick={handleLogout}>
+            <button
+              type="button"
+              className="logout-button"
+              onClick={handleLogout}
+            >
               Logout
             </button>
           </div>
@@ -143,12 +171,16 @@ function App() {
                   <span className="card-link">View Profile →</span>
                 </button>
 
-                <div className="dashboard-card">
+                <button
+                  type="button"
+                  className="dashboard-card clickable-card"
+                  onClick={() => setShowAttendance(true)}
+                >
                   <span className="card-icon">📅</span>
                   <h3>My Attendance</h3>
                   <p>Check your attendance records and status.</p>
-                  <span className="card-link">Coming next</span>
-                </div>
+                  <span className="card-link">View Attendance →</span>
+                </button>
 
                 <div className="dashboard-card">
                   <span className="card-icon">📚</span>

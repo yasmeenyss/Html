@@ -1,0 +1,160 @@
+.attendance-page {
+  padding: 28px;
+  color: #1e293b;
+  background: #f8fafc;
+  min-height: 100%;
+  border-radius: 16px;
+}
+
+.attendance-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.attendance-eyebrow {
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  margin-bottom: 8px;
+}
+
+.attendance-heading h2 {
+  font-size: 28px;
+  margin: 0 0 8px;
+}
+
+.attendance-heading p:last-child {
+  color: #64748b;
+  margin: 0;
+}
+
+.attendance-icon {
+  font-size: 38px;
+  background: #e0e7ff;
+  padding: 16px;
+  border-radius: 16px;
+}
+
+.attendance-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.attendance-stat {
+  background: #ffffff;
+  padding: 20px;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.attendance-stat span {
+  color: #64748b;
+  font-size: 14px;
+}
+
+.attendance-stat strong {
+  font-size: 28px;
+  color: #3730a3;
+}
+
+.attendance-records {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 22px;
+}
+
+.attendance-records h3 {
+  margin: 0 0 20px;
+  font-size: 19px;
+}
+
+.attendance-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.attendance-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.attendance-table th,
+.attendance-table td {
+  padding: 15px 12px;
+  border-bottom: 1px solid #e2e8f0;
+  white-space: nowrap;
+}
+
+.attendance-table th {
+  color: #64748b;
+  background: #f8fafc;
+  font-size: 13px;
+}
+
+.attendance-table td {
+  font-size: 14px;
+}
+
+.attendance-status {
+  display: inline-block;
+  padding: 6px 11px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.attendance-status.present {
+  color: #166534;
+  background: #dcfce7;
+}
+
+.attendance-status.absent {
+  color: #991b1b;
+  background: #fee2e2;
+}
+
+.attendance-status.late {
+  color: #92400e;
+  background: #fef3c7;
+}
+
+.attendance-message {
+  color: #64748b;
+  padding: 20px 0;
+}
+
+.attendance-error {
+  color: #b91c1c;
+  background: #fee2e2;
+  padding: 14px;
+  border-radius: 10px;
+}
+
+@media (max-width: 600px) {
+  .attendance-page {
+    padding: 16px;
+  }
+
+  .attendance-heading h2 {
+    font-size: 23px;
+  }
+
+  .attendance-records {
+    padding: 14px;
+  }
+
+  .attendance-stat {
+    padding: 15px;
+  }
+}
