@@ -1,0 +1,64 @@
+.faculty-students {
+  min-height: 100vh;
+  padding: 28px;
+  background: #f8fafc;
+  color: #1e293b;
+  box-sizing: border-box;
+}
+
+.faculty-students h1 {
+  margin: 0 0 8px;
+  color: #172554;
+  font-size: 30px;
+}
+
+.students-subtitle {
+  margin: 0 0 24px;
+  color: #64748b;
+}
+
+.students-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
+}
+
+.students-table {
+  width: 100%;
+  border-collapse: collapse;
+  white-space: nowrap;
+}
+
+.students-table th,
+.students-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #e2e8f0;
+  text-align: left;
+  font-size: 14px;
+}
+
+.students-table th {
+  background: #e0e7ff;
+  color: #312e81;
+  font-weight: 700;
+}
+
+.students-table tbody tr:hover {
+  background: #f1f5f9;
+}
+
+.students-error {
+  padding: 12px;
+  border-radius: 8px;
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+@media (max-width: 600px) {
+  .faculty-students {
+    padding: 16px;
+  }
+}

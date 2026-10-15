@@ -1,21 +1,42 @@
 import { useState } from "react";
 import "./App.css";
+
 import StudentProfile from "./pages/StudentProfile";
 import Attendance from "./pages/Attendance";
+import ManageStudents from "./pages/ManageStudents";
+import ManageFaculty from "./pages/ManageFaculty";
+import FacultyDashboard from "./pages/FacultyDashboard";
+import FacultyStudents from "./pages/FacultyStudents";
 
 function App() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [user, setUser] = useState(() =>
-    JSON.parse(localStorage.getItem("user") || "null"),
-  );
-  const [error, setError] = useState("");
+  const [user, setUser] = useState(() => {
+    const savedUser = localStorage.getItem("user");
+
+    try {
+      return savedUser ? JSON.parse(savedUser) : null;
+    } catch {
+      return null;
+    }
+  });
+
   const [showProfile, setShowProfile] = useState(false);
   const [showAttendance, setShowAttendance] = useState(false);
+  const [showFacultyAttendance, setShowFacultyAttendance] = useState(false);
+  const [showManageStudents, setShowManageStudents] = useState(false);
+  const [showManageFaculty, setShowManageFaculty] = useState(false);
+  const [showFacultyProfile, setShowFacultyProfile] = useState(false);
+  const [showFacultyStudents, setShowFacultyStudents] = useState(false);
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
+  const dashboardRole = user?.role;
+
+  async function handleLogin(event) {
+    event.preventDefault();
+
     setError("");
     setLoading(true);
 
@@ -31,253 +52,145 @@ function App() {
       const data = await response.json();
 
       if (!response.ok) {
-        setError(data.message || "Invalid email or password.");
-        return;
+        throw new Error(data.message || "Login failed.");
       }
-
-      if (!data.token) {
-        setError("Login response mein token nahi mila.");
-        return;
-      }
-
-      const actualRole = data.role || data.user?.role || data.profile?.role;
-
-      const loggedInUser = {
-        ...data,
-        role: actualRole,
-      };
 
       localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(loggedInUser));
+      localStorage.setItem("user", JSON.stringify(data.user));
 
-      setUser(loggedInUser);
-      setShowProfile(false);
-      setShowAttendance(false);
+      setUser(data.user);
+      setEmail("");
+      setPassword("");
     } catch (err) {
-      console.error("Login error:", err);
-      setError(
-        "Backend se connection nahi ho raha. Backend server check karo.",
-      );
+      setError(err.message || "Unable to login. Please try again.");
     } finally {
       setLoading(false);
     }
-  };
+  }
 
-  const handleLogout = () => {
+  function handleLogout() {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
 
     setUser(null);
     setEmail("");
     setPassword("");
+    setError("");
+
+    backToDashboard();
+  }
+
+  function backToDashboard() {
     setShowProfile(false);
     setShowAttendance(false);
-    setError("");
-  };
+    setShowFacultyAttendance(false);
+    setShowManageStudents(false);
+    setShowManageFaculty(false);
+    setShowFacultyProfile(false);
+    setShowFacultyStudents(false);
+  }
 
-  if (user) {
-    const dashboardRole = user.role;
-
-    if (showProfile && dashboardRole === "student") {
-      return (
-        <div className="profile-screen">
-          <button
-            type="button"
-            className="back-button"
-            onClick={() => setShowProfile(false)}
-          >
-            ← Back to Dashboard
-          </button>
-
-          <StudentProfile />
-        </div>
-      );
-    }
-
-    if (showAttendance && dashboardRole === "student") {
-      return (
-        <div className="profile-screen">
-          <button
-            type="button"
-            className="back-button"
-            onClick={() => setShowAttendance(false)}
-          >
-            ← Back to Dashboard
-          </button>
-
-          <Attendance />
-        </div>
-      );
-    }
-
+  // Student profile
+  if (user && showProfile && dashboardRole === "student") {
     return (
-      <div className="dashboard-container">
-        <header className="dashboard-header">
-          <div className="brand">
-            <div className="brand-icon">🎓</div>
-            <div>
-              <h1>Smart College</h1>
-              <p>Management System</p>
-            </div>
-          </div>
-
-          <div className="header-actions">
-            <span className="role-badge">{dashboardRole || "User"}</span>
-
-            <button
-              type="button"
-              className="logout-button"
-              onClick={handleLogout}
-            >
-              Logout
-            </button>
-          </div>
-        </header>
-
-        <main className="dashboard-content">
-          <section className="welcome-section">
-            <div>
-              <p className="welcome-label">SMART COLLEGE PORTAL</p>
-
-              <h2>
-                {dashboardRole === "admin"
-                  ? "Admin Dashboard"
-                  : dashboardRole === "faculty"
-                    ? "Welcome, Faculty!"
-                    : dashboardRole === "student"
-                      ? "Welcome, Student!"
-                      : "Dashboard"}
-              </h2>
-
-              <p className="dashboard-description">
-                Manage your college activities from one place.
-              </p>
-            </div>
-
-            <div className="welcome-icon">✨</div>
-          </section>
-
-          <section className="dashboard-grid">
-            {dashboardRole === "student" && (
-              <>
-                <button
-                  type="button"
-                  className="dashboard-card clickable-card"
-                  onClick={() => setShowProfile(true)}
-                >
-                  <span className="card-icon">👤</span>
-                  <h3>My Profile</h3>
-                  <p>View your personal and academic information.</p>
-                  <span className="card-link">View Profile →</span>
-                </button>
-
-                <button
-                  type="button"
-                  className="dashboard-card clickable-card"
-                  onClick={() => setShowAttendance(true)}
-                >
-                  <span className="card-icon">📅</span>
-                  <h3>My Attendance</h3>
-                  <p>Check your attendance records and status.</p>
-                  <span className="card-link">View Attendance →</span>
-                </button>
-
-                <div className="dashboard-card">
-                  <span className="card-icon">📚</span>
-                  <h3>Academic Overview</h3>
-                  <p>View your semester and department information.</p>
-                  <span className="card-link">Student services</span>
-                </div>
-              </>
-            )}
-
-            {dashboardRole === "faculty" && (
-              <>
-                <div className="dashboard-card">
-                  <span className="card-icon">👨‍🏫</span>
-                  <h3>Faculty Profile</h3>
-                  <p>Manage your teaching and faculty information.</p>
-                  <span className="card-link">Faculty services</span>
-                </div>
-
-                <div className="dashboard-card">
-                  <span className="card-icon">📅</span>
-                  <h3>Attendance</h3>
-                  <p>Mark and review student attendance.</p>
-                  <span className="card-link">Coming next</span>
-                </div>
-
-                <div className="dashboard-card">
-                  <span className="card-icon">👥</span>
-                  <h3>Students</h3>
-                  <p>Access student information.</p>
-                  <span className="card-link">Student services</span>
-                </div>
-              </>
-            )}
-
-            {dashboardRole === "admin" && (
-              <>
-                <div className="dashboard-card">
-                  <span className="card-icon">👥</span>
-                  <h3>Manage Students</h3>
-                  <p>Access and manage student records.</p>
-                  <span className="card-link">Coming next</span>
-                </div>
-
-                <div className="dashboard-card">
-                  <span className="card-icon">👨‍🏫</span>
-                  <h3>Manage Faculty</h3>
-                  <p>View faculty information and records.</p>
-                  <span className="card-link">Coming next</span>
-                </div>
-
-                <div className="dashboard-card">
-                  <span className="card-icon">📊</span>
-                  <h3>College Overview</h3>
-                  <p>Monitor college activities and attendance.</p>
-                  <span className="card-link">Admin services</span>
-                </div>
-              </>
-            )}
-
-            {!["admin", "faculty", "student"].includes(dashboardRole) && (
-              <div className="dashboard-card">
-                <span className="card-icon">⚠️</span>
-                <h3>Role not recognized</h3>
-                <p>
-                  Your account role could not be identified. Please log out and
-                  log in again.
-                </p>
-              </div>
-            )}
-          </section>
-        </main>
+      <div className="profile-screen">
+        <button className="back-button" onClick={backToDashboard}>
+          ← Back to Dashboard
+        </button>
+        <StudentProfile />
       </div>
     );
   }
 
-  return (
-    <div className="login-container">
-      <div className="login-card">
-        <div className="login-logo">🎓</div>
+  // Student attendance
+  if (user && showAttendance && dashboardRole === "student") {
+    return (
+      <div className="profile-screen">
+        <button className="back-button" onClick={backToDashboard}>
+          ← Back to Dashboard
+        </button>
+        <Attendance />
+      </div>
+    );
+  }
 
-        <h1>Smart College</h1>
-        <p className="login-subtitle">Management System</p>
+  // Faculty attendance
+  if (user && showFacultyAttendance && dashboardRole === "faculty") {
+    return (
+      <div className="profile-screen">
+        <button className="back-button" onClick={backToDashboard}>
+          ← Back to Dashboard
+        </button>
+        <Attendance />
+      </div>
+    );
+  }
 
-        <h2>Welcome Back!</h2>
-        <p className="login-description">
-          Sign in to access your college portal.
-        </p>
+  // Admin: manage students
+  if (user && showManageStudents && dashboardRole === "admin") {
+    return (
+      <div className="profile-screen">
+        <button className="back-button" onClick={backToDashboard}>
+          ← Back to Dashboard
+        </button>
+        <ManageStudents />
+      </div>
+    );
+  }
 
-        <form onSubmit={handleLogin}>
-          <label htmlFor="email">Email Address</label>
+  // Admin: manage faculty
+  if (user && showManageFaculty && dashboardRole === "admin") {
+    return (
+      <div className="profile-screen">
+        <button className="back-button" onClick={backToDashboard}>
+          ← Back to Dashboard
+        </button>
+        <ManageFaculty />
+      </div>
+    );
+  }
+
+  // Faculty: My Subjects / faculty profile
+  if (user && showFacultyProfile && dashboardRole === "faculty") {
+    return (
+      <div className="profile-screen">
+        <button className="back-button" onClick={backToDashboard}>
+          ← Back to Dashboard
+        </button>
+        <FacultyDashboard />
+      </div>
+    );
+  }
+
+  // Faculty: students list
+  if (user && showFacultyStudents && dashboardRole === "faculty") {
+    return (
+      <div className="profile-screen">
+        <button className="back-button" onClick={backToDashboard}>
+          ← Back to Dashboard
+        </button>
+        <FacultyStudents />
+      </div>
+    );
+  }
+
+  // Login page
+  if (!user) {
+    return (
+      <div className="login-container">
+        <form className="login-form" onSubmit={handleLogin}>
+          <h1>Smart College Management</h1>
+          <p>Login to your account</p>
+
+          {error && <p className="login-error">{error}</p>}
+
+          <label htmlFor="email">Email</label>
           <input
             id="email"
             type="email"
             placeholder="Enter your email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(event) => setEmail(event.target.value)}
             required
           />
 
@@ -287,23 +200,155 @@ function App() {
             type="password"
             placeholder="Enter your password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(event) => setPassword(event.target.value)}
             required
           />
 
-          {error && (
-            <p className="login-error" role="alert">
-              {error}
-            </p>
-          )}
-
-          <button type="submit" className="login-button" disabled={loading}>
-            {loading ? "Signing in..." : "Login →"}
+          <button type="submit" disabled={loading}>
+            {loading ? "Logging in..." : "Login"}
           </button>
         </form>
-
-        <p className="login-footer">Smart College Management System</p>
       </div>
+    );
+  }
+
+  // Student dashboard
+  if (dashboardRole === "student") {
+    return (
+      <div className="dashboard-container">
+        <header className="dashboard-header">
+          <div>
+            <h1>Student Dashboard</h1>
+            <p>Welcome, {user.name}</p>
+          </div>
+
+          <button className="logout-button" onClick={handleLogout}>
+            Logout
+          </button>
+        </header>
+
+        <div className="dashboard-grid">
+          <button
+            className="dashboard-card clickable-card"
+            onClick={() => setShowProfile(true)}
+          >
+            <span className="card-icon">👤</span>
+            <h3>My Profile</h3>
+            <p>View your personal and academic details.</p>
+            <span className="card-link">View Profile →</span>
+          </button>
+
+          <button
+            className="dashboard-card clickable-card"
+            onClick={() => setShowAttendance(true)}
+          >
+            <span className="card-icon">📅</span>
+            <h3>Attendance</h3>
+            <p>View your attendance information.</p>
+            <span className="card-link">View Attendance →</span>
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Faculty dashboard
+  if (dashboardRole === "faculty") {
+    return (
+      <div className="dashboard-container">
+        <header className="dashboard-header">
+          <div>
+            <h1>Faculty Dashboard</h1>
+            <p>Welcome, {user.name}</p>
+          </div>
+
+          <button className="logout-button" onClick={handleLogout}>
+            Logout
+          </button>
+        </header>
+
+        <div className="dashboard-grid">
+          <button
+            className="dashboard-card clickable-card"
+            onClick={() => setShowFacultyAttendance(true)}
+          >
+            <span className="card-icon">📅</span>
+            <h3>Attendance</h3>
+            <p>Access attendance information.</p>
+            <span className="card-link">Open Attendance →</span>
+          </button>
+
+          <button
+            className="dashboard-card clickable-card"
+            onClick={() => setShowFacultyProfile(true)}
+          >
+            <span className="card-icon">📚</span>
+            <h3>My Subjects</h3>
+            <p>View your faculty and subject details.</p>
+            <span className="card-link">View Subjects →</span>
+          </button>
+
+          <button
+            className="dashboard-card clickable-card"
+            onClick={() => setShowFacultyStudents(true)}
+          >
+            <span className="card-icon">👨‍🎓</span>
+            <h3>Students</h3>
+            <p>View student academic information.</p>
+            <span className="card-link">View Students →</span>
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Admin dashboard
+  if (dashboardRole === "admin") {
+    return (
+      <div className="dashboard-container">
+        <header className="dashboard-header">
+          <div>
+            <h1>Admin Dashboard</h1>
+            <p>Welcome, {user.name}</p>
+          </div>
+
+          <button className="logout-button" onClick={handleLogout}>
+            Logout
+          </button>
+        </header>
+
+        <div className="dashboard-grid">
+          <button
+            className="dashboard-card clickable-card"
+            onClick={() => setShowManageStudents(true)}
+          >
+            <span className="card-icon">👨‍🎓</span>
+            <h3>Manage Students</h3>
+            <p>Add, view, edit and delete student records.</p>
+            <span className="card-link">Manage Students →</span>
+          </button>
+
+          <button
+            className="dashboard-card clickable-card"
+            onClick={() => setShowManageFaculty(true)}
+          >
+            <span className="card-icon">👩‍🏫</span>
+            <h3>Manage Faculty</h3>
+            <p>Add, view, edit and delete faculty records.</p>
+            <span className="card-link">Manage Faculty →</span>
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="dashboard-container">
+      <h1>Unknown user role</h1>
+      <p>Please log out and sign in again with the correct account.</p>
+      <button className="logout-button" onClick={handleLogout}>
+        Logout
+      </button>
     </div>
   );
 }
