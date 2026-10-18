@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./App.css";
 
+import Marks from "./pages/Marks";
 import StudentProfile from "./pages/StudentProfile";
 import Attendance from "./pages/Attendance";
 import ManageStudents from "./pages/ManageStudents";
@@ -26,6 +27,7 @@ function App() {
   const [showManageFaculty, setShowManageFaculty] = useState(false);
   const [showFacultyProfile, setShowFacultyProfile] = useState(false);
   const [showFacultyStudents, setShowFacultyStudents] = useState(false);
+  const [showMarks, setShowMarks] = useState(false);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -58,6 +60,7 @@ function App() {
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
 
+      backToDashboard();
       setUser(data.user);
       setEmail("");
       setPassword("");
@@ -88,6 +91,23 @@ function App() {
     setShowManageFaculty(false);
     setShowFacultyProfile(false);
     setShowFacultyStudents(false);
+    setShowMarks(false);
+  }
+
+  // Marks and Results page: Student, Faculty and Admin
+  if (
+    user &&
+    showMarks &&
+    ["admin", "faculty", "student"].includes(dashboardRole)
+  ) {
+    return (
+      <div className="profile-screen">
+        <button className="back-button" onClick={backToDashboard}>
+          ← Back to Dashboard
+        </button>
+        <Marks />
+      </div>
+    );
   }
 
   // Student profile
@@ -150,7 +170,7 @@ function App() {
     );
   }
 
-  // Faculty: My Subjects / faculty profile
+  // Faculty: My Subjects
   if (user && showFacultyProfile && dashboardRole === "faculty") {
     return (
       <div className="profile-screen">
@@ -162,7 +182,7 @@ function App() {
     );
   }
 
-  // Faculty: students list
+  // Faculty: Students list
   if (user && showFacultyStudents && dashboardRole === "faculty") {
     return (
       <div className="profile-screen">
@@ -247,6 +267,16 @@ function App() {
             <p>View your attendance information.</p>
             <span className="card-link">View Attendance →</span>
           </button>
+
+          <button
+            className="dashboard-card clickable-card"
+            onClick={() => setShowMarks(true)}
+          >
+            <span className="card-icon">📊</span>
+            <h3>Marks &amp; Results</h3>
+            <p>View your examination results and marks.</p>
+            <span className="card-link">View Results →</span>
+          </button>
         </div>
       </div>
     );
@@ -297,6 +327,16 @@ function App() {
             <p>View student academic information.</p>
             <span className="card-link">View Students →</span>
           </button>
+
+          <button
+            className="dashboard-card clickable-card"
+            onClick={() => setShowMarks(true)}
+          >
+            <span className="card-icon">📝</span>
+            <h3>Marks &amp; Results</h3>
+            <p>Enter marks and view examination results.</p>
+            <span className="card-link">Manage Marks →</span>
+          </button>
         </div>
       </div>
     );
@@ -337,11 +377,22 @@ function App() {
             <p>Add, view, edit and delete faculty records.</p>
             <span className="card-link">Manage Faculty →</span>
           </button>
+
+          <button
+            className="dashboard-card clickable-card"
+            onClick={() => setShowMarks(true)}
+          >
+            <span className="card-icon">📊</span>
+            <h3>Marks &amp; Results</h3>
+            <p>View examination marks and results.</p>
+            <span className="card-link">View Marks →</span>
+          </button>
         </div>
       </div>
     );
   }
 
+  // Unknown role
   return (
     <div className="dashboard-container">
       <h1>Unknown user role</h1>

@@ -21,11 +21,16 @@ function ManageStudents() {
   const [showForm, setShowForm] = useState(false);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [resettingId, setResettingId] = useState(null);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
   async function request(url, options = {}) {
     const token = localStorage.getItem("token");
+
+    if (!token) {
+      throw new Error("Please log in as Admin again.");
+    }
 
     const response = await fetch(url, {
       ...options,
@@ -58,8 +63,9 @@ function ManageStudents() {
       setLoading(false);
     }
   }
-
   useEffect(() => {
+    let cancelled = false;
+
     async function fetchStudents() {
       const token = localStorage.getItem("token");
 
@@ -70,22 +76,32 @@ function ManageStudents() {
           },
         });
 
-        const data = await response.json();
+        const data = await response.json().catch(() => ({}));
 
         if (!response.ok) {
-          throw new Error(data.message || "Failed to load students");
+          throw new Error(data.message || "Failed to load students.");
         }
 
-        setStudents(data.students || []);
-        setError("");
+        if (!cancelled) {
+          setStudents(data.students || []);
+          setError("");
+        }
       } catch (err) {
-        setError(err.message || "Students load nahi hue.");
+        if (!cancelled) {
+          setError(err.message || "Students load nahi hue.");
+        }
       } finally {
-        setLoading(false);
+        if (!cancelled) {
+          setLoading(false);
+        }
       }
     }
 
     fetchStudents();
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   function handleChange(event) {
@@ -107,6 +123,7 @@ function ManageStudents() {
 
   function openEditForm(student) {
     setEditingId(student._id);
+
     setForm({
       name: student.user?.name || "",
       email: student.user?.email || "",
@@ -116,6 +133,7 @@ function ManageStudents() {
       semester: String(student.semester || 1),
       phone: student.phone || "",
     });
+
     setError("");
     setMessage("");
     setShowForm(true);
@@ -172,7 +190,7 @@ function ManageStudents() {
     const studentName = student.user?.name || student.rollNumber;
 
     const confirmed = window.confirm(
-      `Are you sure you want to delete ${studentName}? This will also delete their login account.`,
+      `Delete ${studentName}? Their login account will also be deleted.`,
     );
 
     if (!confirmed) return;
@@ -189,6 +207,46 @@ function ManageStudents() {
       await loadStudents();
     } catch (err) {
       setError(err.message || "Student delete nahi hua.");
+    }
+  }
+
+  // Reset Password function
+  async function handleResetPassword(student) {
+    const studentName = student.user?.name || student.rollNumber;
+
+    const newPassword = window.prompt(
+      `Enter a new password for ${studentName} (minimum 8 characters):`,
+    );
+
+    if (newPassword === null) return;
+
+    if (newPassword.length < 8) {
+      setError("Password must be at least 8 characters long.");
+      setMessage("");
+      return;
+    }
+
+    const confirmed = window.confirm(
+      `Are you sure you want to reset the password for ${studentName}?`,
+    );
+
+    if (!confirmed) return;
+
+    setError("");
+    setMessage("");
+    setResettingId(student._id);
+
+    try {
+      const data = await request(`${API_URL}/${student._id}/reset-password`, {
+        method: "PATCH",
+        body: JSON.stringify({ password: newPassword }),
+      });
+
+      setMessage(data.message || "Student password reset successfully.");
+    } catch (err) {
+      setError(err.message || "Password reset failed.");
+    } finally {
+      setResettingId(null);
     }
   }
 
@@ -269,7 +327,7 @@ function ManageStudents() {
                   type="password"
                   value={form.password}
                   onChange={handleChange}
-                  minLength={6}
+                  minLength={8}
                   autoComplete="new-password"
                   required
                 />
@@ -394,10 +452,12 @@ function ManageStudents() {
                       <strong>{student.user?.name || "Unknown"}</strong>
                       <small>{student.user?.email || "No email"}</small>
                     </td>
+
                     <td>{student.rollNumber}</td>
                     <td>{student.department}</td>
                     <td>{student.semester}</td>
                     <td>{student.phone || "—"}</td>
+
                     <td>
                       <div className="student-row-actions">
                         <button
@@ -406,6 +466,17 @@ function ManageStudents() {
                           onClick={() => openEditForm(student)}
                         >
                           Edit
+                        </button>
+
+                        <button
+                          type="button"
+                          className="student-edit-button"
+                          disabled={resettingId === student._id}
+                          onClick={() => handleResetPassword(student)}
+                        >
+                          {resettingId === student._id
+                            ? "Resetting..."
+                            : "Reset Password"}
                         </button>
 
                         <button

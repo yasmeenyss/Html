@@ -1,135 +1,104 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import "./Attendance.css";
 
 const API = "http://localhost:5000/api";
 
+function getStoredRole() {
+  try {
+    const user = JSON.parse(localStorage.getItem("user") || "null");
+    return user?.role?.toLowerCase() || "";
+  } catch {
+    return "";
+  }
+}
+
 function Attendance() {
   const [records, setRecords] = useState([]);
   const [students, setStudents] = useState([]);
+  const [facultySubject, setFacultySubject] = useState("");
+  const [studentId, setStudentId] = useState("");
+  const [subject, setSubject] = useState("");
+  const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
+  const [status, setStatus] = useState("Present");
   const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
-  const [studentId, setStudentId] = useState("");
-  const [subject, setSubject] = useState("");
-  const [facultySubject, setFacultySubject] = useState("");
-  const [date, setDate] = useState(() => {
-    const today = new Date();
-    const offset = today.getTimezoneOffset();
-    return new Date(today.getTime() - offset * 60000)
-      .toISOString()
-      .slice(0, 10);
-  });
-
-  const [status, setStatus] = useState("Present");
-  const [saving, setSaving] = useState(false);
-
   const token = localStorage.getItem("token");
-
-  // eslint-disable-next-line no-useless-assignment
-  let storedUser = null;
-
-  try {
-    storedUser = JSON.parse(localStorage.getItem("user") || "null");
-  } catch {
-    storedUser = null;
-  }
-
-  const role = storedUser?.role?.toLowerCase() || "";
+  const role = getStoredRole();
   const isStaff = role === "faculty" || role === "admin";
 
-  async function fetchData() {
-    const response = await fetch(`${API}/attendance`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+  const apiRequest = useCallback(
+    async (url, options = {}) => {
+      const response = await fetch(`${API}${url}`, {
+        ...options,
+        headers: {
+          Authorization: `Bearer ${token}`,
+          ...(options.body ? { "Content-Type": "application/json" } : {}),
+          ...options.headers,
+        },
+      });
 
-    const data = await response.json();
+      const data = await response.json().catch(() => ({}));
 
-    if (!response.ok) {
-      throw new Error(data.message || "Unable to fetch attendance.");
-    }
+      if (!response.ok) {
+        throw new Error(data.message || `Request failed (${response.status})`);
+      }
 
+      return data;
+    },
+    [token],
+  );
+
+  const fetchAttendance = useCallback(async () => {
+    const data = await apiRequest("/attendance");
     setRecords(data.attendance || []);
-  }
+  }, [apiRequest]);
 
   useEffect(() => {
     let cancelled = false;
 
     async function loadPage() {
       try {
-        const token = localStorage.getItem("token");
+        setLoading(true);
+        setError("");
 
         if (!token) {
-          throw new Error("Please login first.");
+          throw new Error("Please log in again.");
         }
 
-        const attendanceResponse = await fetch(`${API}/attendance`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        const attendanceData = await attendanceResponse.json();
-
-        if (!attendanceResponse.ok) {
-          throw new Error(
-            attendanceData.message || "Unable to fetch attendance.",
-          );
-        }
+        const attendanceData = await apiRequest("/attendance");
 
         if (cancelled) return;
 
         setRecords(attendanceData.attendance || []);
 
+        if (isStaff) {
+          const studentData = await apiRequest("/students");
+
+          if (cancelled) return;
+
+          const studentList = Array.isArray(studentData)
+            ? studentData
+            : studentData.students || [];
+
+          setStudents(studentList);
+        }
+
         if (role === "faculty") {
-          const profileResponse = await fetch(`${API}/faculty/me`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
+          const profileData = await apiRequest("/faculty/me");
 
-          const profileData = await profileResponse.json();
-
-          if (!profileResponse.ok) {
-            throw new Error(
-              profileData.message || "Unable to load faculty profile.",
-            );
-          }
+          if (cancelled) return;
 
           const assignedSubject = profileData.faculty?.subject || "";
 
-          if (!cancelled) {
-            setFacultySubject(assignedSubject);
-            setSubject(assignedSubject);
-          }
-        }
-
-        if (role === "faculty" || role === "admin") {
-          const studentsResponse = await fetch(`${API}/students`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-
-          const studentsData = await studentsResponse.json();
-
-          if (!studentsResponse.ok) {
-            throw new Error(studentsData.message || "Unable to load students.");
-          }
-
-          const studentList = Array.isArray(studentsData)
-            ? studentsData
-            : studentsData.students || [];
-
-          if (!cancelled) {
-            setStudents(studentList);
-          }
+          setFacultySubject(assignedSubject);
+          setSubject(assignedSubject);
         }
       } catch (err) {
         if (!cancelled) {
-          setError(err.message || "Something went wrong.");
+          setError(err.message || "Unable to load attendance.");
         }
       } finally {
         if (!cancelled) {
@@ -143,52 +112,41 @@ function Attendance() {
     return () => {
       cancelled = true;
     };
-  }, [token, role]);
+  }, [token, role, isStaff, apiRequest]);
 
   async function handleSubmit(event) {
     event.preventDefault();
     setError("");
     setMessage("");
 
-    if (!studentId || !subject.trim() || !date) {
-      setError("Please select a student, subject and date.");
-      return;
-    }
+    const selectedSubject =
+      role === "faculty" ? facultySubject : subject.trim();
 
-    if (role === "faculty" && subject !== facultySubject) {
-      setError("You can mark attendance only for your assigned subject.");
+    if (!studentId || !selectedSubject || !date) {
+      setError("Please select a student, subject and date.");
       return;
     }
 
     try {
       setSaving(true);
 
-      const response = await fetch(`${API}/attendance`, {
+      await apiRequest("/attendance", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
         body: JSON.stringify({
           studentId,
-          subject: subject.trim(),
+          subject: selectedSubject,
           date,
           status,
         }),
       });
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "Unable to mark attendance.");
-      }
-
-      setMessage(data.message || "Attendance marked successfully!");
+      setMessage("Attendance marked successfully!");
       setStudentId("");
+      setStatus("Present");
 
-      await fetchData();
+      await fetchAttendance();
     } catch (err) {
-      setError(err.message || "Something went wrong.");
+      setError(err.message || "Unable to mark attendance.");
     } finally {
       setSaving(false);
     }
@@ -196,18 +154,9 @@ function Attendance() {
 
   if (loading) {
     return (
-      <div className="attendance-page">
+      <main className="attendance-page">
         <p className="attendance-message">Loading attendance...</p>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="attendance-page">
-        <h2>My Attendance</h2>
-        <p className="attendance-error">{error}</p>
-      </div>
+      </main>
     );
   }
 
@@ -225,8 +174,8 @@ function Attendance() {
     records.length > 0 ? Math.round((presentCount / records.length) * 100) : 0;
 
   return (
-    <div className="attendance-page">
-      <div className="attendance-heading">
+    <main className="attendance-page">
+      <header className="attendance-heading">
         <div>
           <p className="attendance-eyebrow">
             {isStaff ? "FACULTY PORTAL" : "STUDENT PORTAL"}
@@ -237,12 +186,24 @@ function Attendance() {
           <p>
             {isStaff
               ? "Mark and review student attendance."
-              : "Check your subject-wise attendance records."}
+              : "Check your attendance records."}
           </p>
         </div>
 
         <span className="attendance-icon">📅</span>
-      </div>
+      </header>
+
+      {error && (
+        <p className="attendance-error" role="alert">
+          {error}
+        </p>
+      )}
+
+      {message && (
+        <p className="attendance-success" role="status">
+          {message}
+        </p>
+      )}
 
       {isStaff && (
         <section className="attendance-records">
@@ -270,17 +231,12 @@ function Attendance() {
             <label>
               Subject
               <input
-                value={subject}
+                value={role === "faculty" ? facultySubject : subject}
                 onChange={(event) => setSubject(event.target.value)}
-                placeholder="Subject"
+                placeholder="Enter subject"
                 readOnly={role === "faculty"}
                 required
               />
-              {role === "faculty" && (
-                <small>
-                  Your assigned subject: {facultySubject || "Not assigned"}
-                </small>
-              )}
             </label>
 
             <label>
@@ -323,13 +279,17 @@ function Attendance() {
               No students loaded. Please check the students API.
             </p>
           )}
+
+          {role === "faculty" && !facultySubject && (
+            <p className="attendance-error">
+              No subject is assigned to your faculty profile. Ask the admin to
+              update it.
+            </p>
+          )}
         </section>
       )}
 
-      {error && <p className="attendance-error">{error}</p>}
-      {message && <p className="attendance-success">{message}</p>}
-
-      <div className="attendance-summary">
+      <section className="attendance-summary">
         <div className="attendance-stat">
           <span>Total Records</span>
           <strong>{records.length}</strong>
@@ -351,10 +311,10 @@ function Attendance() {
         </div>
 
         <div className="attendance-stat">
-          <span>Present Rate</span>
+          <span>Attendance</span>
           <strong>{percentage}%</strong>
         </div>
-      </div>
+      </section>
 
       <section className="attendance-records">
         <h3>Attendance History</h3>
@@ -378,11 +338,7 @@ function Attendance() {
                 {records.map((record) => (
                   <tr key={record._id}>
                     {isStaff && (
-                      <td>
-                        {record.student?.user?.name ||
-                          record.student?.name ||
-                          "Student"}
-                      </td>
+                      <td>{record.student?.user?.name || "Student"}</td>
                     )}
 
                     <td>{record.subject}</td>
@@ -397,7 +353,9 @@ function Attendance() {
 
                     <td>
                       <span
-                        className={`attendance-status ${record.status?.toLowerCase()}`}
+                        className={`attendance-status ${
+                          record.status?.toLowerCase() || ""
+                        }`}
                       >
                         {record.status}
                       </span>
@@ -409,7 +367,7 @@ function Attendance() {
           </div>
         )}
       </section>
-    </div>
+    </main>
   );
 }
 
