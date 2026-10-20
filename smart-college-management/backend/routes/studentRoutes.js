@@ -11,20 +11,21 @@ const router = express.Router();
 // GET MY PROFILE - Student only
 router.get("/me", protect, authorizeRoles("student"), async (req, res) => {
   try {
-    const student = await Student.findOne({
-      user: req.user.id,
-    }).populate("user", "name email");
+    const student = await Student.findOne({ user: req.user.id }).populate(
+      "user",
+      "name email role",
+    );
 
     if (!student) {
-      return res.status(404).json({
-        message: "Student profile not found for this account",
-      });
+      return res.status(404).json({ message: "Student profile not found." });
     }
 
     return res.status(200).json({ student });
   } catch (error) {
     console.error("GET MY PROFILE ERROR:", error);
-    return res.status(500).json({ message: "Failed to fetch profile" });
+    return res
+      .status(500)
+      .json({ message: "Failed to fetch student profile." });
   }
 });
 
@@ -33,87 +34,56 @@ router.post("/", protect, authorizeRoles("admin"), async (req, res) => {
   let createdUser;
 
   try {
-    const {
-      name,
-      email,
-      password,
-      rollNumber,
-      usn,
-      department,
-      semester,
-      phone,
-    } = req.body;
+    const { name, email, password, rollNumber, department, semester, phone } =
+      req.body;
 
-    const studentUSN = (rollNumber || usn || "").trim();
-
-    if (
-      !name?.trim() ||
-      !email?.trim() ||
-      !password ||
-      !studentUSN ||
-      !department?.trim() ||
-      semester === undefined ||
-      semester === ""
-    ) {
+    if (!name || !email || !password || !rollNumber) {
       return res.status(400).json({
-        message:
-          "Name, email, password, USN, department and semester are required.",
-      });
-    }
-
-    if (password.length < 6) {
-      return res.status(400).json({
-        message: "Password must be at least 6 characters long.",
-      });
-    }
-
-    const semesterNumber = Number(semester);
-
-    if (
-      !Number.isInteger(semesterNumber) ||
-      semesterNumber < 1 ||
-      semesterNumber > 12
-    ) {
-      return res.status(400).json({
-        message: "Semester must be a number between 1 and 12.",
+        message: "Name, email, password, and roll number are required.",
       });
     }
 
     const normalizedEmail = email.trim().toLowerCase();
 
-    const existingUser = await User.findOne({ email: normalizedEmail });
-    const existingStudent = await Student.findOne({
-      rollNumber: studentUSN,
-    });
-
+    const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(409).json({ message: "Email already exists." });
     }
 
+    const existingStudent = await Student.findOne({ rollNumber });
     if (existingStudent) {
-      return res.status(409).json({ message: "USN already exists." });
+      return res.status(409).json({ message: "Roll number already exists." });
     }
 
-    createdUser = await User.create({
-      name: name.trim(),
-      email: normalizedEmail,
-      password: await bcrypt.hash(password, 10),
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const user = await User.create({
+      name,
+      email,
+      password: hashedPassword,
       role: "student",
     });
 
     const student = await Student.create({
-      user: createdUser._id,
-      rollNumber: studentUSN,
-      department: department.trim(),
-      semester: semesterNumber,
-      phone: phone?.trim() || "",
+      user: user._id,
+      rollNumber,
+      department,
+      semester,
+      phone,
     });
 
     await student.populate("user", "name email");
 
     return res.status(201).json({
       message: "Student created successfully.",
-      student,
+      student: {
+        _id: student._id,
+        rollNumber: student.rollNumber,
+        department: student.department,
+        semester: student.semester,
+        phone: student.phone,
+        user: { _id: user._id, name: user.name, email: user.email },
+      },
     });
   } catch (error) {
     if (createdUser) {
@@ -127,9 +97,7 @@ router.post("/", protect, authorizeRoles("admin"), async (req, res) => {
     }
 
     console.error("CREATE STUDENT ERROR:", error);
-    return res.status(500).json({
-      message: "Failed to create student.",
-    });
+    return res.status(500).json({ message: "Failed to create student." });
   }
 });
 
@@ -168,15 +136,10 @@ router.get(
         .populate("user", "name email")
         .sort({ createdAt: -1 });
 
-      return res.status(200).json({
-        count: students.length,
-        students,
-      });
+      return res.status(200).json({ count: students.length, students });
     } catch (error) {
       console.error("GET STUDENTS ERROR:", error);
-      return res.status(500).json({
-        message: "Failed to fetch students.",
-      });
+      return res.status(500).json({ message: "Failed to fetch students." });
     }
   },
 );
@@ -200,7 +163,7 @@ router.get(
       return res.status(200).json({ student });
     } catch (error) {
       console.error("GET SINGLE STUDENT ERROR:", error);
-      return res.status(400).json({ message: "Invalid student ID." });
+      return res.status(500).json({ message: "Failed to fetch student." });
     }
   },
 );
@@ -208,8 +171,7 @@ router.get(
 // UPDATE STUDENT - Admin only
 router.put("/:id", protect, authorizeRoles("admin"), async (req, res) => {
   try {
-    const { name, email, rollNumber, usn, department, semester, phone } =
-      req.body;
+    const { name, email, rollNumber, department, semester, phone } = req.body;
 
     const student = await Student.findById(req.params.id);
 
@@ -217,87 +179,52 @@ router.put("/:id", protect, authorizeRoles("admin"), async (req, res) => {
       return res.status(404).json({ message: "Student not found." });
     }
 
-    const newUSN = (rollNumber || usn || student.rollNumber).trim();
-    const semesterNumber =
-      semester === undefined || semester === ""
-        ? student.semester
-        : Number(semester);
-
-    if (
-      !Number.isInteger(semesterNumber) ||
-      semesterNumber < 1 ||
-      semesterNumber > 12
-    ) {
-      return res.status(400).json({
-        message: "Semester must be a number between 1 and 12.",
-      });
-    }
-
-    const duplicateUSN = await Student.findOne({
-      rollNumber: newUSN,
-      _id: { $ne: student._id },
-    });
-
-    if (duplicateUSN) {
-      return res.status(409).json({ message: "USN already exists." });
-    }
-
-    const userUpdates = {};
-
-    if (name !== undefined) {
-      if (!name.trim()) {
-        return res.status(400).json({ message: "Name cannot be empty." });
-      }
-      userUpdates.name = name.trim();
-    }
-
-    if (email !== undefined) {
-      if (!email.trim()) {
-        return res.status(400).json({ message: "Email cannot be empty." });
-      }
-
-      const normalizedEmail = email.trim().toLowerCase();
-      const duplicateEmail = await User.findOne({
-        email: normalizedEmail,
+    if (email) {
+      const existingUser = await User.findOne({
+        email,
         _id: { $ne: student.user },
       });
 
-      if (duplicateEmail) {
+      if (existingUser) {
         return res.status(409).json({ message: "Email already exists." });
       }
 
       userUpdates.email = normalizedEmail;
     }
 
-    if (Object.keys(userUpdates).length > 0) {
-      await User.findByIdAndUpdate(student.user, userUpdates, {
-        runValidators: true,
+    if (rollNumber) {
+      const existingStudent = await Student.findOne({
+        rollNumber,
+        _id: { $ne: student._id },
       });
-    }
 
-    student.rollNumber = newUSN;
-
-    if (department !== undefined) {
-      if (!department.trim()) {
-        return res.status(400).json({
-          message: "Department cannot be empty.",
-        });
+      if (existingStudent) {
+        return res.status(409).json({ message: "Roll number already exists." });
       }
-      student.department = department.trim();
     }
 
-    student.semester = semesterNumber;
+    await User.findByIdAndUpdate(student.user, {
+      ...(name !== undefined && { name }),
+      ...(email !== undefined && { email }),
+    });
 
-    if (phone !== undefined) {
-      student.phone = phone.trim();
-    }
+    Object.assign(student, {
+      ...(rollNumber !== undefined && { rollNumber }),
+      ...(department !== undefined && { department }),
+      ...(semester !== undefined && { semester }),
+      ...(phone !== undefined && { phone }),
+    });
 
     await student.save();
-    await student.populate("user", "name email");
+
+    const updatedStudent = await Student.findById(student._id).populate(
+      "user",
+      "name email",
+    );
 
     return res.status(200).json({
       message: "Student updated successfully.",
-      student,
+      student: updatedStudent,
     });
   } catch (error) {
     if (error.code === 11000) {
@@ -307,41 +234,53 @@ router.put("/:id", protect, authorizeRoles("admin"), async (req, res) => {
     }
 
     console.error("UPDATE STUDENT ERROR:", error);
-    return res.status(500).json({
-      message: "Failed to update student.",
-    });
+    return res.status(500).json({ message: "Failed to update student." });
   }
 });
 
-// UPDATE STUDENT - Admin and Faculty
-router.put(
-  "/:id",
+// RESET ONE STUDENT PASSWORD - Admin only
+router.patch(
+  "/:id/reset-password",
   protect,
-  authorizeRoles("admin", "faculty"),
+  authorizeRoles("admin"),
   async (req, res) => {
     try {
-      const student = await Student.findByIdAndUpdate(req.params.id, req.body, {
-        new: true,
-        runValidators: true,
-      }).populate("user", "name email");
+      const { password } = req.body;
 
-      if (!student) {
-        return res.status(404).json({
-          message: "Student not found",
+      if (typeof password !== "string" || password.length < 8) {
+        return res.status(400).json({
+          message: "Password must be at least 8 characters long.",
         });
       }
 
+      const student = await Student.findById(req.params.id);
+
+      if (!student) {
+        return res.status(404).json({ message: "Student not found." });
+      }
+
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+      const user = await User.findByIdAndUpdate(
+        student.user,
+        { password: hashedPassword },
+        { new: true },
+      );
+
+      if (!user) {
+        return res
+          .status(404)
+          .json({ message: "Student user account not found." });
+      }
+
       return res.status(200).json({
-        message: "Student updated successfully",
-        student,
+        message: "Student password reset successfully.",
       });
     } catch (error) {
-      console.error("UPDATE STUDENT ERROR:", error);
-
-      return res.status(500).json({
-        message: "Failed to update student",
-        error: error.message,
-      });
+      console.error("RESET STUDENT PASSWORD ERROR:", error);
+      return res
+        .status(500)
+        .json({ message: "Failed to reset student password." });
     }
   },
 );
@@ -358,15 +297,10 @@ router.delete("/:id", protect, authorizeRoles("admin"), async (req, res) => {
     await Student.findByIdAndDelete(student._id);
     await User.findByIdAndDelete(student.user);
 
-    return res.status(200).json({
-      message: "Student and associated account deleted successfully.",
-    });
+    return res.status(200).json({ message: "Student deleted successfully." });
   } catch (error) {
     console.error("DELETE STUDENT ERROR:", error);
-
-    return res.status(500).json({
-      message: "Failed to delete student.",
-    });
+    return res.status(500).json({ message: "Failed to delete student." });
   }
 });
 

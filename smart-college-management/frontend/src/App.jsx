@@ -8,7 +8,8 @@ import ManageStudents from "./pages/ManageStudents";
 import ManageFaculty from "./pages/ManageFaculty";
 import FacultyDashboard from "./pages/FacultyDashboard";
 import FacultyStudents from "./pages/FacultyStudents";
-
+import NoticeBoard from "./pages/NoticeBoard";
+import Timetable from "./pages/Timetable";
 function App() {
   const [user, setUser] = useState(() => {
     const savedUser = localStorage.getItem("user");
@@ -28,7 +29,8 @@ function App() {
   const [showFacultyProfile, setShowFacultyProfile] = useState(false);
   const [showFacultyStudents, setShowFacultyStudents] = useState(false);
   const [showMarks, setShowMarks] = useState(false);
-
+  const [showNoticeBoard, setShowNoticeBoard] = useState(false);
+const [showTimetable, setShowTimetable] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -92,9 +94,21 @@ function App() {
     setShowFacultyProfile(false);
     setShowFacultyStudents(false);
     setShowMarks(false);
+    setShowNoticeBoard(false);
+    setShowTimetable(false);
   }
 
-  // Marks and Results page: Student, Faculty and Admin
+  // Notice Board: Admin, Faculty and Student
+  if (user && showNoticeBoard) {
+    return <NoticeBoard user={user} onBack={backToDashboard} />;
+  }
+
+  // Timetable: Admin, Faculty and Student
+  if (user && showTimetable) {
+    return <Timetable user={user} onBack={backToDashboard} />;
+  }
+
+  // Marks and Results
   if (
     user &&
     showMarks &&
@@ -146,7 +160,7 @@ function App() {
     );
   }
 
-  // Admin: manage students
+  // Admin: Manage Students
   if (user && showManageStudents && dashboardRole === "admin") {
     return (
       <div className="profile-screen">
@@ -158,7 +172,7 @@ function App() {
     );
   }
 
-  // Admin: manage faculty
+  // Admin: Manage Faculty
   if (user && showManageFaculty && dashboardRole === "admin") {
     return (
       <div className="profile-screen">
@@ -182,7 +196,7 @@ function App() {
     );
   }
 
-  // Faculty: Students list
+  // Faculty: Students
   if (user && showFacultyStudents && dashboardRole === "faculty") {
     return (
       <div className="profile-screen">
@@ -232,7 +246,7 @@ function App() {
     );
   }
 
-  // Student dashboard
+  // Student Dashboard
   if (dashboardRole === "student") {
     return (
       <div className="dashboard-container">
@@ -277,12 +291,32 @@ function App() {
             <p>View your examination results and marks.</p>
             <span className="card-link">View Results →</span>
           </button>
+
+          <button
+            className="dashboard-card clickable-card"
+            onClick={() => setShowNoticeBoard(true)}
+          >
+            <span className="card-icon">📢</span>
+            <h3>Notice Board</h3>
+            <p>Read the latest college announcements.</p>
+            <span className="card-link">View Notices →</span>
+          </button>
+
+          <button
+            className="dashboard-card clickable-card"
+            onClick={() => setShowTimetable(true)}
+          >
+            <span className="card-icon">🗓️</span>
+            <h3>Timetable</h3>
+            <p>View your weekly class schedule.</p>
+            <span className="card-link">View Timetable →</span>
+          </button>
         </div>
       </div>
     );
   }
 
-  // Faculty dashboard
+  // Faculty Dashboard
   if (dashboardRole === "faculty") {
     return (
       <div className="dashboard-container">
@@ -337,12 +371,32 @@ function App() {
             <p>Enter marks and view examination results.</p>
             <span className="card-link">Manage Marks →</span>
           </button>
+
+          <button
+            className="dashboard-card clickable-card"
+            onClick={() => setShowNoticeBoard(true)}
+          >
+            <span className="card-icon">📢</span>
+            <h3>Notice Board</h3>
+            <p>Read the latest college announcements.</p>
+            <span className="card-link">View Notices →</span>
+          </button>
+
+          <button
+            className="dashboard-card clickable-card"
+            onClick={() => setShowTimetable(true)}
+          >
+            <span className="card-icon">🗓️</span>
+            <h3>Timetable</h3>
+            <p>View the weekly class schedule.</p>
+            <span className="card-link">View Timetable →</span>
+          </button>
         </div>
       </div>
     );
   }
 
-  // Admin dashboard
+  // Admin Dashboard
   if (dashboardRole === "admin") {
     return (
       <div className="dashboard-container">
@@ -387,6 +441,26 @@ function App() {
             <p>View examination marks and results.</p>
             <span className="card-link">View Marks →</span>
           </button>
+
+          <button
+            className="dashboard-card clickable-card"
+            onClick={() => setShowNoticeBoard(true)}
+          >
+            <span className="card-icon">📢</span>
+            <h3>Notice Board</h3>
+            <p>Publish and manage college announcements.</p>
+            <span className="card-link">Manage Notices →</span>
+          </button>
+
+          <button
+            className="dashboard-card clickable-card"
+            onClick={() => setShowTimetable(true)}
+          >
+            <span className="card-icon">🗓️</span>
+            <h3>Timetable Management</h3>
+            <p>Create and manage the weekly class schedule.</p>
+            <span className="card-link">Manage Timetable →</span>
+          </button>
         </div>
       </div>
     );
@@ -405,3 +479,4 @@ function App() {
 }
 
 export default App;
+

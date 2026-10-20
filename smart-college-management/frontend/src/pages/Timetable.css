@@ -1,0 +1,205 @@
+.timetable-page {
+  max-width: 1200px;
+  margin: 30px auto;
+  padding: 24px;
+  color: #1f2937;
+  font-family: Arial, sans-serif;
+}
+
+.timetable-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 28px;
+}
+
+.timetable-header h1 {
+  margin: 0 0 8px;
+  color: #1e3a8a;
+  font-size: 30px;
+}
+
+.timetable-header p {
+  margin: 0;
+  color: #64748b;
+}
+
+.timetable-back-btn,
+.timetable-form button {
+  padding: 12px 18px;
+  border: none;
+  border-radius: 8px;
+  background: #2563eb;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.timetable-back-btn:hover,
+.timetable-form button:hover {
+  background: #1d4ed8;
+}
+
+.timetable-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 24px;
+  margin-bottom: 32px;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow: 0 4px 15px rgba(15, 23, 42, 0.06);
+}
+
+.timetable-form h2,
+.timetable-list h2 {
+  margin-top: 0;
+  color: #1e3a8a;
+}
+
+.timetable-form label {
+  font-weight: 600;
+  color: #374151;
+}
+
+.timetable-form input,
+.timetable-form select {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #1f2937;
+  font: inherit;
+}
+
+.timetable-form input:focus,
+.timetable-form select:focus {
+  outline: 2px solid #93c5fd;
+  border-color: #2563eb;
+}
+
+.timetable-time-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.timetable-time-fields > div {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.timetable-form button {
+  align-self: flex-start;
+  margin-top: 8px;
+}
+
+.timetable-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.timetable-day {
+  padding: 20px;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 3px 12px rgba(15, 23, 42, 0.05);
+}
+
+.timetable-day h3 {
+  margin-top: 0;
+  color: #1d4ed8;
+}
+
+.timetable-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.timetable-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.timetable-table th,
+.timetable-table td {
+  padding: 12px;
+  border-bottom: 1px solid #e2e8f0;
+  white-space: nowrap;
+}
+
+.timetable-table th {
+  background: #eff6ff;
+  color: #1e3a8a;
+}
+
+.timetable-table tbody tr:hover {
+  background: #f8fafc;
+}
+
+.timetable-delete-btn {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 7px;
+  background: #fee2e2;
+  color: #b91c1c;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.timetable-delete-btn:hover {
+  background: #fecaca;
+}
+
+.timetable-error,
+.timetable-success {
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.timetable-error {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.timetable-success {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.timetable-empty {
+  padding: 24px;
+  text-align: center;
+  color: #64748b;
+  background: #f8fafc;
+  border-radius: 10px;
+}
+
+@media (max-width: 600px) {
+  .timetable-page {
+    margin: 10px auto;
+    padding: 16px;
+  }
+
+  .timetable-header h1 {
+    font-size: 25px;
+  }
+
+  .timetable-form,
+  .timetable-day {
+    padding: 16px;
+  }
+
+  .timetable-time-fields {
+    grid-template-columns: 1fr;
+  }
+}

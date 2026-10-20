@@ -10,6 +10,32 @@ const { authorizeRoles } = require("../middleware/roleMiddleware");
 const router = express.Router();
 
 // =====================================
+// GET LOGGED-IN FACULTY PROFILE
+// IMPORTANT: Keep /me BEFORE /:id
+// =====================================
+router.get("/me", protect, authorizeRoles("faculty"), async (req, res) => {
+  try {
+    const faculty = await Faculty.findOne({
+      user: req.user.id,
+    }).populate("user", "name email role");
+
+    if (!faculty) {
+      return res.status(404).json({
+        message: "Faculty profile not found.",
+      });
+    }
+
+    return res.status(200).json({ faculty });
+  } catch (error) {
+    console.error("Fetch my faculty profile error:", error.message);
+
+    return res.status(500).json({
+      message: "Failed to fetch your faculty profile.",
+    });
+  }
+});
+
+// =====================================
 // CREATE FACULTY ACCOUNT + PROFILE
 // Admin only
 // =====================================
@@ -149,7 +175,7 @@ router.get(
         faculty,
       });
     } catch (error) {
-      console.error("Get faculty error:", error.message);
+      console.error("Get all faculty error:", error.message);
 
       return res.status(500).json({
         message: "Failed to fetch faculty.",
@@ -159,11 +185,17 @@ router.get(
 );
 
 // =====================================
-// GET SINGLE FACULTY
-// Any logged-in user
+// GET SINGLE FACULTY BY ID
+// Keep this AFTER /me
 // =====================================
 router.get("/:id", protect, async (req, res) => {
   try {
+    if (!/^[0-9a-fA-F]{24}$/.test(req.params.id)) {
+      return res.status(400).json({
+        message: "Invalid faculty ID.",
+      });
+    }
+
     const faculty = await Faculty.findById(req.params.id).populate(
       "user",
       "name email role",
@@ -180,7 +212,7 @@ router.get("/:id", protect, async (req, res) => {
       faculty,
     });
   } catch (error) {
-    console.error("Get faculty error:", error.message);
+    console.error("Get faculty by ID error:", error.message);
 
     return res.status(500).json({
       message: "Failed to fetch faculty.",
