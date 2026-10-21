@@ -1,6 +1,10 @@
-import { useState } from "react";
-import "./App.css";
 
+import { useState } from "react";
+
+import "./App.css";
+import MyApplications from "./pages/MyApplications";
+import ReviewApplications from "./pages/ReviewApplications";
+import ManagePlacements from "./pages/ManagePlacements";
 import Marks from "./pages/Marks";
 import StudentProfile from "./pages/StudentProfile";
 import Attendance from "./pages/Attendance";
@@ -10,6 +14,8 @@ import FacultyDashboard from "./pages/FacultyDashboard";
 import FacultyStudents from "./pages/FacultyStudents";
 import NoticeBoard from "./pages/NoticeBoard";
 import Timetable from "./pages/Timetable";
+import Placements from "./pages/Placements";
+
 function App() {
   const [user, setUser] = useState(() => {
     const savedUser = localStorage.getItem("user");
@@ -26,17 +32,39 @@ function App() {
   const [showFacultyAttendance, setShowFacultyAttendance] = useState(false);
   const [showManageStudents, setShowManageStudents] = useState(false);
   const [showManageFaculty, setShowManageFaculty] = useState(false);
+  const [showManagePlacements, setShowManagePlacements] = useState(false);
+  const [showReviewApplications, setShowReviewApplications] = useState(false);
+  const [showMyApplications, setShowMyApplications] = useState(false);
   const [showFacultyProfile, setShowFacultyProfile] = useState(false);
   const [showFacultyStudents, setShowFacultyStudents] = useState(false);
   const [showMarks, setShowMarks] = useState(false);
   const [showNoticeBoard, setShowNoticeBoard] = useState(false);
-const [showTimetable, setShowTimetable] = useState(false);
+  const [showTimetable, setShowTimetable] = useState(false);
+  const [showPlacements, setShowPlacements] = useState(false);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const dashboardRole = user?.role;
+
+  function backToDashboard() {
+    setShowProfile(false);
+    setShowAttendance(false);
+    setShowFacultyAttendance(false);
+    setShowManageStudents(false);
+    setShowManageFaculty(false);
+    setShowManagePlacements(false);
+    setShowReviewApplications(false);
+    setShowMyApplications(false);
+    setShowFacultyProfile(false);
+    setShowFacultyStudents(false);
+    setShowMarks(false);
+    setShowNoticeBoard(false);
+    setShowTimetable(false);
+    setShowPlacements(false);
+  }
 
   async function handleLogin(event) {
     event.preventDefault();
@@ -75,6 +103,7 @@ const [showTimetable, setShowTimetable] = useState(false);
 
   function handleLogout() {
     localStorage.removeItem("token");
+    localStorage.removeItem("authToken");
     localStorage.removeItem("user");
 
     setUser(null);
@@ -85,27 +114,62 @@ const [showTimetable, setShowTimetable] = useState(false);
     backToDashboard();
   }
 
-  function backToDashboard() {
-    setShowProfile(false);
-    setShowAttendance(false);
-    setShowFacultyAttendance(false);
-    setShowManageStudents(false);
-    setShowManageFaculty(false);
-    setShowFacultyProfile(false);
-    setShowFacultyStudents(false);
-    setShowMarks(false);
-    setShowNoticeBoard(false);
-    setShowTimetable(false);
-  }
-
-  // Notice Board: Admin, Faculty and Student
+  // Notice Board
   if (user && showNoticeBoard) {
     return <NoticeBoard user={user} onBack={backToDashboard} />;
   }
 
-  // Timetable: Admin, Faculty and Student
+  // Timetable
   if (user && showTimetable) {
     return <Timetable user={user} onBack={backToDashboard} />;
+  }
+
+  // Student: Placements
+  if (user && showPlacements && dashboardRole === "student") {
+    return (
+      <div className="profile-screen">
+        <button className="back-button" onClick={backToDashboard}>
+          ← Back to Dashboard
+        </button>
+        <Placements />
+      </div>
+    );
+  }
+
+  // Student: My Applications
+  if (user && showMyApplications && dashboardRole === "student") {
+    return (
+      <div className="profile-screen">
+        <button className="back-button" onClick={backToDashboard}>
+          ← Back to Dashboard
+        </button>
+        <MyApplications />
+      </div>
+    );
+  }
+
+  // Admin: Review Applications
+  if (user && showReviewApplications && dashboardRole === "admin") {
+    return (
+      <div className="profile-screen">
+        <button className="back-button" onClick={backToDashboard}>
+          ← Back to Dashboard
+        </button>
+        <ReviewApplications />
+      </div>
+    );
+  }
+
+  // Admin: Manage Placements
+  if (user && showManagePlacements && dashboardRole === "admin") {
+    return (
+      <div className="profile-screen">
+        <button className="back-button" onClick={backToDashboard}>
+          ← Back to Dashboard
+        </button>
+        <ManagePlacements />
+      </div>
+    );
   }
 
   // Marks and Results
@@ -124,7 +188,7 @@ const [showTimetable, setShowTimetable] = useState(false);
     );
   }
 
-  // Student profile
+  // Student Profile
   if (user && showProfile && dashboardRole === "student") {
     return (
       <div className="profile-screen">
@@ -136,7 +200,7 @@ const [showTimetable, setShowTimetable] = useState(false);
     );
   }
 
-  // Student attendance
+  // Student Attendance
   if (user && showAttendance && dashboardRole === "student") {
     return (
       <div className="profile-screen">
@@ -148,7 +212,7 @@ const [showTimetable, setShowTimetable] = useState(false);
     );
   }
 
-  // Faculty attendance
+  // Faculty Attendance
   if (user && showFacultyAttendance && dashboardRole === "faculty") {
     return (
       <div className="profile-screen">
@@ -208,7 +272,7 @@ const [showTimetable, setShowTimetable] = useState(false);
     );
   }
 
-  // Login page
+  // Login Page
   if (!user) {
     return (
       <div className="login-container">
@@ -276,7 +340,7 @@ const [showTimetable, setShowTimetable] = useState(false);
             className="dashboard-card clickable-card"
             onClick={() => setShowAttendance(true)}
           >
-            <span className="card-icon">📅</span>
+            <span className="card-icon">📊</span>
             <h3>Attendance</h3>
             <p>View your attendance information.</p>
             <span className="card-link">View Attendance →</span>
@@ -286,7 +350,7 @@ const [showTimetable, setShowTimetable] = useState(false);
             className="dashboard-card clickable-card"
             onClick={() => setShowMarks(true)}
           >
-            <span className="card-icon">📊</span>
+            <span className="card-icon">📈</span>
             <h3>Marks &amp; Results</h3>
             <p>View your examination results and marks.</p>
             <span className="card-link">View Results →</span>
@@ -310,6 +374,26 @@ const [showTimetable, setShowTimetable] = useState(false);
             <h3>Timetable</h3>
             <p>View your weekly class schedule.</p>
             <span className="card-link">View Timetable →</span>
+          </button>
+
+          <button
+            className="dashboard-card clickable-card"
+            onClick={() => setShowPlacements(true)}
+          >
+            <span className="card-icon">💼</span>
+            <h3>Placements</h3>
+            <p>Explore job and internship opportunities.</p>
+            <span className="card-link">View Placements →</span>
+          </button>
+
+          <button
+            className="dashboard-card clickable-card"
+            onClick={() => setShowMyApplications(true)}
+          >
+            <span className="card-icon">📋</span>
+            <h3>My Applications</h3>
+            <p>Track your job applications and selection status.</p>
+            <span className="card-link">Track Applications →</span>
           </button>
         </div>
       </div>
@@ -336,7 +420,7 @@ const [showTimetable, setShowTimetable] = useState(false);
             className="dashboard-card clickable-card"
             onClick={() => setShowFacultyAttendance(true)}
           >
-            <span className="card-icon">📅</span>
+            <span className="card-icon">📊</span>
             <h3>Attendance</h3>
             <p>Access attendance information.</p>
             <span className="card-link">Open Attendance →</span>
@@ -436,7 +520,7 @@ const [showTimetable, setShowTimetable] = useState(false);
             className="dashboard-card clickable-card"
             onClick={() => setShowMarks(true)}
           >
-            <span className="card-icon">📊</span>
+            <span className="card-icon">📈</span>
             <h3>Marks &amp; Results</h3>
             <p>View examination marks and results.</p>
             <span className="card-link">View Marks →</span>
@@ -461,16 +545,40 @@ const [showTimetable, setShowTimetable] = useState(false);
             <p>Create and manage the weekly class schedule.</p>
             <span className="card-link">Manage Timetable →</span>
           </button>
+
+          <button
+            className="dashboard-card clickable-card"
+            onClick={() => setShowManagePlacements(true)}
+          >
+            <span className="card-icon">💼</span>
+            <h3>Manage Placements</h3>
+            <p>Add and manage job and internship opportunities.</p>
+            <span className="card-link">Manage Placements →</span>
+          </button>
+
+          <button
+            className="dashboard-card clickable-card"
+            onClick={() => setShowReviewApplications(true)}
+          >
+            <span className="card-icon">📋</span>
+            <h3>Review Applications</h3>
+            <p>
+              View student applications, resumes and update application
+              status.
+            </p>
+            <span className="card-link">Review Applications →</span>
+          </button>
         </div>
       </div>
     );
   }
 
-  // Unknown role
+  // Unknown Role
   return (
     <div className="dashboard-container">
       <h1>Unknown user role</h1>
       <p>Please log out and sign in again with the correct account.</p>
+
       <button className="logout-button" onClick={handleLogout}>
         Logout
       </button>
@@ -479,4 +587,3 @@ const [showTimetable, setShowTimetable] = useState(false);
 }
 
 export default App;
-
