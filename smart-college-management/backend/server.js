@@ -1,6 +1,7 @@
 require("dotenv").config();
 const applicationRoutes = require("./routes/applicationRoutes");
 const analyticsRoutes = require("./routes/analyticsRoutes");
+const aiPlacementRoutes = require("./routes/aiPlacementRoutes");
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
@@ -12,14 +13,17 @@ const noticeRoutes = require("./routes/noticeRoutes");
 const studentRoutes = require("./routes/studentRoutes");
 const facultyRoutes = require("./routes/facultyRoutes");
 const timetableRoutes = require("./routes/timetableRoutes");
+
 const app = express();
 app.use(cors());
 app.use(express.json());
 app.use("/api/applications", applicationRoutes);
 app.use("/api/analytics", analyticsRoutes);
+app.use("/api/ai-placement", aiPlacementRoutes);
 app.get("/", (req, res) => {
   res.send("Smart College Management System API is running");
 });
+
 app.use("/api/marks", markRoutes);
 app.use("/api/placements", placementRoutes);
 app.use("/api/auth", authRoutes);

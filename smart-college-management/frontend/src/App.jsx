@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-
+import AdminAnalytics from "./pages/AdminAnalytics";
 import "./App.css";
 import MyApplications from "./pages/MyApplications";
 import ReviewApplications from "./pages/ReviewApplications";
@@ -35,6 +35,7 @@ function App() {
   const [showManagePlacements, setShowManagePlacements] = useState(false);
   const [showReviewApplications, setShowReviewApplications] = useState(false);
   const [showMyApplications, setShowMyApplications] = useState(false);
+  const [showAdminAnalytics, setShowAdminAnalytics] = useState(false);
   const [showFacultyProfile, setShowFacultyProfile] = useState(false);
   const [showFacultyStudents, setShowFacultyStudents] = useState(false);
   const [showMarks, setShowMarks] = useState(false);
@@ -64,6 +65,7 @@ function App() {
     setShowNoticeBoard(false);
     setShowTimetable(false);
     setShowPlacements(false);
+    setShowAdminAnalytics(false);
   }
 
   async function handleLogin(event) {
@@ -480,6 +482,15 @@ function App() {
     );
   }
 
+  // Admin Analytics
+if (user && showAdminAnalytics && dashboardRole === "admin") {
+  return (
+    <div className="profile-screen">
+      <AdminAnalytics onBack={backToDashboard} />
+    </div>
+  );
+}
+
   // Admin Dashboard
   if (dashboardRole === "admin") {
     return (
@@ -489,7 +500,15 @@ function App() {
             <h1>Admin Dashboard</h1>
             <p>Welcome, {user.name}</p>
           </div>
-
+<button
+  className="dashboard-card clickable-card"
+  onClick={() => setShowAdminAnalytics(true)}
+>
+  <span className="card-icon">📊</span>
+  <h3>Analytics Dashboard</h3>
+  <p>View student, faculty, placement and application statistics.</p>
+  <span className="card-link">View Analytics →</span>
+</button>
           <button className="logout-button" onClick={handleLogout}>
             Logout
           </button>
