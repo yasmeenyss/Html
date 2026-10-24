@@ -52,11 +52,14 @@ function Timetable({ user, onBack }) {
 
     const loadTimetable = async () => {
       try {
-        const response = await fetch("http://https://smart-college-management-api-1870.onrender.com/api/timetable", {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+        const response = await fetch(
+          "https://smart-college-management-api-1870.onrender.com/api/timetable",
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
           },
-        });
+        );
 
         const data = await response.json();
 
@@ -88,22 +91,25 @@ function Timetable({ user, onBack }) {
     setLoading(true);
 
     try {
-      const response = await fetch("http://https://smart-college-management-api-1870.onrender.com/api/timetable", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+      const response = await fetch(
+        "https://smart-college-management-api-1870.onrender.com/api/timetable",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify({
+            day,
+            subject,
+            facultyName,
+            className,
+            startTime,
+            endTime,
+            room,
+          }),
         },
-        body: JSON.stringify({
-          day,
-          subject,
-          facultyName,
-          className,
-          startTime,
-          endTime,
-          room,
-        }),
-      });
+      );
 
       const data = await response.json();
 
@@ -142,7 +148,7 @@ function Timetable({ user, onBack }) {
 
     try {
       const response = await fetch(
-        `http://https://smart-college-management-api-1870.onrender.com/api/timetable/${id}`,
+        `https://smart-college-management-api-1870.onrender.com/api/timetable/${id}`,
         {
           method: "DELETE",
           headers: {
