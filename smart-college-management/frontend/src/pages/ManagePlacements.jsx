@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
-const API_URL = "http://localhost:5000/api/placements";
+const API_URL =
+  "https://smart-college-management-api-1870.onrender.com/api/placements";
 
 function ManagePlacements() {
   const [placements, setPlacements] = useState([]);

@@ -1,4 +1,3 @@
-
 import { useCallback, useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import {
@@ -12,16 +11,13 @@ import {
 } from "recharts";
 import "./AdminAnalytics.css";
 
-const API = "http://localhost:5000/api/analytics";
-const AI_API = "http://localhost:5000/api/ai-placement";
-
-
+const API =
+  "https://smart-college-management-api-1870.onrender.com/api/analytics";
+const AI_API =
+  "https://smart-college-management-api-1870.onrender.com/api/ai-placement";
 
 function getToken() {
-  return (
-    localStorage.getItem("token") ||
-    localStorage.getItem("authToken")
-  );
+  return localStorage.getItem("token") || localStorage.getItem("authToken");
 }
 
 function StatCard({ icon, title, value }) {
@@ -80,9 +76,7 @@ export default function AdminAnalytics() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(
-          data.message || "Unable to load analytics."
-        );
+        throw new Error(data.message || "Unable to load analytics.");
       }
 
       // Supports analytics returned directly or inside stats.
@@ -127,9 +121,7 @@ export default function AdminAnalytics() {
         const data = await response.json();
 
         if (!response.ok) {
-          throw new Error(
-            data.message || "Unable to load analytics."
-          );
+          throw new Error(data.message || "Unable to load analytics.");
         }
 
         const source = data.stats || data.analytics || data;
@@ -186,18 +178,12 @@ export default function AdminAnalytics() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(
-          data.message || "Unable to generate AI report."
-        );
+        throw new Error(data.message || "Unable to generate AI report.");
       }
 
-      setAiInsights(
-        data.insights || "No analysis was returned by Gemini."
-      );
+      setAiInsights(data.insights || "No analysis was returned by Gemini.");
     } catch (err) {
-      setAiError(
-        err.message || "AI analysis failed. Please try again."
-      );
+      setAiError(err.message || "AI analysis failed. Please try again.");
     } finally {
       setAiLoading(false);
     }
@@ -210,32 +196,24 @@ export default function AdminAnalytics() {
     },
     {
       name: "Under Review",
-      value: Number(
-        stats.underReviewApplications ?? stats.underReview ?? 0
-      ),
+      value: Number(stats.underReviewApplications ?? stats.underReview ?? 0),
     },
     {
       name: "Shortlisted",
-      value: Number(
-        stats.shortlistedApplications ?? stats.shortlisted ?? 0
-      ),
+      value: Number(stats.shortlistedApplications ?? stats.shortlisted ?? 0),
     },
     {
       name: "Selected",
-      value: Number(
-        stats.selectedApplications ?? stats.selected ?? 0
-      ),
+      value: Number(stats.selectedApplications ?? stats.selected ?? 0),
     },
     {
       name: "Rejected",
-      value: Number(
-        stats.rejectedApplications ?? stats.rejected ?? 0
-      ),
+      value: Number(stats.rejectedApplications ?? stats.rejected ?? 0),
     },
   ];
 
   const totalApplications = Number(
-    stats.totalApplications ?? stats.totalApplicationsCount ?? 0
+    stats.totalApplications ?? stats.totalApplicationsCount ?? 0,
   );
 
   const chartData = applicationStatuses.map((item) => ({
@@ -254,9 +232,7 @@ export default function AdminAnalytics() {
         <div>
           <p className="analytics-eyebrow">ADMINISTRATION</p>
           <h1>Analytics Dashboard</h1>
-          <p>
-            Track college activity and placement performance in one place.
-          </p>
+          <p>Track college activity and placement performance in one place.</p>
         </div>
 
         <div className="analytics-header-actions">
@@ -275,19 +251,14 @@ export default function AdminAnalytics() {
         <span>Auto-refresh every 30 seconds</span>
         <span>
           Last updated:{" "}
-          {lastUpdated
-            ? lastUpdated.toLocaleTimeString()
-            : "Not yet updated"}
+          {lastUpdated ? lastUpdated.toLocaleTimeString() : "Not yet updated"}
         </span>
       </div>
 
       {error && (
         <div className="analytics-error" role="alert">
           {error}
-          <button
-            type="button"
-            onClick={() => loadAnalytics(true)}
-          >
+          <button type="button" onClick={() => loadAnalytics(true)}>
             Try again
           </button>
         </div>
@@ -335,10 +306,7 @@ export default function AdminAnalytics() {
 
         <div className="analytics-status-grid">
           {applicationStatuses.map((item) => (
-            <div
-              className="analytics-status-card"
-              key={item.name}
-            >
+            <div className="analytics-status-card" key={item.name}>
               <span>{item.name}</span>
               <strong>{item.value}</strong>
               <p>{percentage(item.value)}% of applications</p>
@@ -383,8 +351,8 @@ export default function AdminAnalytics() {
           <span className="ai-placement-badge">AI POWERED</span>
           <h2>🤖 AI Placement Analyst</h2>
           <p>
-            Get an AI-generated report and practical placement
-            improvement recommendations using college statistics.
+            Get an AI-generated report and practical placement improvement
+            recommendations using college statistics.
           </p>
         </div>
 
@@ -394,9 +362,7 @@ export default function AdminAnalytics() {
           onClick={generateAIInsights}
           disabled={aiLoading}
         >
-          {aiLoading
-            ? "Analyzing..."
-            : "✨ Generate AI Insights"}
+          {aiLoading ? "Analyzing..." : "✨ Generate AI Insights"}
         </button>
 
         {aiLoading && (

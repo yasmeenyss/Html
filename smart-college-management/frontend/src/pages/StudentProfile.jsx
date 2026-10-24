@@ -16,11 +16,14 @@ function StudentProfile() {
           return;
         }
 
-        const response = await fetch("http://localhost:5000/api/students/me", {
-          headers: {
-            Authorization: `Bearer ${token}`,
+        const response = await fetch(
+          "https://smart-college-management-api-1870.onrender.com/api/students/me",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           },
-        });
+        );
 
         const data = await response.json();
 

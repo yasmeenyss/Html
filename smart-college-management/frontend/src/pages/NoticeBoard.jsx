@@ -14,11 +14,14 @@ function NoticeBoard({ user, onBack }) {
 
   const fetchNotices = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/notices", {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const response = await fetch(
+        "https://smart-college-management-api-1870.onrender.com/api/notices",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
-      });
+      );
 
       const data = await response.json();
 
@@ -45,14 +48,17 @@ function NoticeBoard({ user, onBack }) {
     setSuccess("");
 
     try {
-      const response = await fetch("http://localhost:5000/api/notices", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+      const response = await fetch(
+        "https://smart-college-management-api-1870.onrender.com/api/notices",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ title, message, audience }),
         },
-        body: JSON.stringify({ title, message, audience }),
-      });
+      );
 
       const data = await response.json();
 
@@ -79,12 +85,15 @@ function NoticeBoard({ user, onBack }) {
     setSuccess("");
 
     try {
-      const response = await fetch(`http://localhost:5000/api/notices/${id}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const response = await fetch(
+        `https://smart-college-management-api-1870.onrender.com/api/notices/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
-      });
+      );
 
       const data = await response.json();
 

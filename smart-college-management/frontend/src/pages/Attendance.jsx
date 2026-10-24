@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import "./Attendance.css";
 
-const API = "http://localhost:5000/api";
+const API = "https://smart-college-management-api-1870.onrender.com/api";
 
 function getStoredRole() {
   try {

@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import "./FacultyDashboard.css";
 
-const API_URL = "http://localhost:5000/api/faculty";
+const API_URL =
+  "https://smart-college-management-api-1870.onrender.com/api/faculty";
 
 function FacultyDashboard() {
   const [faculty, setFaculty] = useState(null);

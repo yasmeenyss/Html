@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import "./Marks.css";
 
-const API_URL = "http://localhost:5000/api";
+const API_URL = "https://smart-college-management-api-1870.onrender.com/api";
 
 function Marks() {
   const [marks, setMarks] = useState([]);
@@ -19,7 +19,6 @@ function Marks() {
     maxMarks: "100",
     marksObtained: "",
   });
-  
 
   const token = localStorage.getItem("token");
   console.log("Token length:", token?.length);

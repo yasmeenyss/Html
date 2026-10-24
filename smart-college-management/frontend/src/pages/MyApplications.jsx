@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import "./MyApplications.css";
 import ApplicationStats from "./ApplicationStats";
 
-const API = "http://localhost:5000/api/applications/my-applications";
+const API =
+  "https://smart-college-management-api-1870.onrender.com/api/applications/my-applications";
 
 const STATUSES = [
   "All Statuses",
@@ -27,8 +28,7 @@ export default function MyApplications() {
     async function loadApplications() {
       try {
         const token =
-          localStorage.getItem("token") ||
-          localStorage.getItem("authToken");
+          localStorage.getItem("token") || localStorage.getItem("authToken");
 
         if (!token) {
           throw new Error("Please login again.");
@@ -69,8 +69,7 @@ export default function MyApplications() {
 
     try {
       const token =
-        localStorage.getItem("token") ||
-        localStorage.getItem("authToken");
+        localStorage.getItem("token") || localStorage.getItem("authToken");
 
       if (!token) throw new Error("Please login again.");
 
@@ -93,9 +92,7 @@ export default function MyApplications() {
   }
 
   function getStatusClass(status) {
-    return `status-${(status || "Applied")
-      .toLowerCase()
-      .replace(/\s+/g, "-")}`;
+    return `status-${(status || "Applied").toLowerCase().replace(/\s+/g, "-")}`;
   }
 
   const filteredApplications = applications.filter((application) => {
@@ -116,9 +113,7 @@ export default function MyApplications() {
 
   if (loading) {
     return (
-      <div className="applications-loading">
-        Loading your applications...
-      </div>
+      <div className="applications-loading">Loading your applications...</div>
     );
   }
 
@@ -139,9 +134,7 @@ export default function MyApplications() {
         </button>
       </div>
 
-      {error && (
-        <div className="applications-error">{error}</div>
-      )}
+      {error && <div className="applications-error">{error}</div>}
 
       {!error && (
         <>
@@ -194,13 +187,17 @@ export default function MyApplications() {
           </div>
 
           <p style={{ color: "#64748b", marginBottom: "16px" }}>
-            Showing {filteredApplications.length} of {applications.length} applications
+            Showing {filteredApplications.length} of {applications.length}{" "}
+            applications
           </p>
 
           {applications.length === 0 ? (
             <div className="applications-empty">
               <h3>No Applications Yet</h3>
-              <p>Explore placement opportunities and apply for your preferred jobs.</p>
+              <p>
+                Explore placement opportunities and apply for your preferred
+                jobs.
+              </p>
             </div>
           ) : filteredApplications.length === 0 ? (
             <div className="applications-empty">
@@ -232,7 +229,9 @@ export default function MyApplications() {
 
                     <p className="application-detail">
                       <strong>Status: </strong>
-                      <span className={`application-status ${getStatusClass(status)}`}>
+                      <span
+                        className={`application-status ${getStatusClass(status)}`}
+                      >
                         {status}
                       </span>
                     </p>
@@ -240,7 +239,9 @@ export default function MyApplications() {
                     <p className="application-detail">
                       <strong>Applied On: </strong>
                       {application.createdAt
-                        ? new Date(application.createdAt).toLocaleDateString("en-IN")
+                        ? new Date(application.createdAt).toLocaleDateString(
+                            "en-IN",
+                          )
                         : "Not available"}
                     </p>
 

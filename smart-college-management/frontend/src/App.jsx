@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import AdminAnalytics from "./pages/AdminAnalytics";
 import "./App.css";
@@ -75,13 +74,16 @@ function App() {
     setLoading(true);
 
     try {
-      const response = await fetch("http://localhost:5000/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        "https://smart-college-management-api-1870.onrender.com/api/auth/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
         },
-        body: JSON.stringify({ email, password }),
-      });
+      );
 
       const data = await response.json();
 
@@ -483,13 +485,13 @@ function App() {
   }
 
   // Admin Analytics
-if (user && showAdminAnalytics && dashboardRole === "admin") {
-  return (
-    <div className="profile-screen">
-      <AdminAnalytics onBack={backToDashboard} />
-    </div>
-  );
-}
+  if (user && showAdminAnalytics && dashboardRole === "admin") {
+    return (
+      <div className="profile-screen">
+        <AdminAnalytics onBack={backToDashboard} />
+      </div>
+    );
+  }
 
   // Admin Dashboard
   if (dashboardRole === "admin") {
@@ -500,15 +502,15 @@ if (user && showAdminAnalytics && dashboardRole === "admin") {
             <h1>Admin Dashboard</h1>
             <p>Welcome, {user.name}</p>
           </div>
-<button
-  className="dashboard-card clickable-card"
-  onClick={() => setShowAdminAnalytics(true)}
->
-  <span className="card-icon">📊</span>
-  <h3>Analytics Dashboard</h3>
-  <p>View student, faculty, placement and application statistics.</p>
-  <span className="card-link">View Analytics →</span>
-</button>
+          <button
+            className="dashboard-card clickable-card"
+            onClick={() => setShowAdminAnalytics(true)}
+          >
+            <span className="card-icon">📊</span>
+            <h3>Analytics Dashboard</h3>
+            <p>View student, faculty, placement and application statistics.</p>
+            <span className="card-link">View Analytics →</span>
+          </button>
           <button className="logout-button" onClick={handleLogout}>
             Logout
           </button>
@@ -582,8 +584,7 @@ if (user && showAdminAnalytics && dashboardRole === "admin") {
             <span className="card-icon">📋</span>
             <h3>Review Applications</h3>
             <p>
-              View student applications, resumes and update application
-              status.
+              View student applications, resumes and update application status.
             </p>
             <span className="card-link">Review Applications →</span>
           </button>

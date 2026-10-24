@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import "./ManageStudents.css";
 
-const API_URL = "http://localhost:5000/api/students";
+const API_URL =
+  "https://smart-college-management-api-1870.onrender.com/api/students";
 
 const emptyForm = {
   name: "",

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
-const API = "http://localhost:5000/api/applications";
+const API =
+  "https://smart-college-management-api-1870.onrender.com/api/applications";
 
 const STATUSES = [
   "Applied",
@@ -17,8 +18,7 @@ export default function ReviewApplications() {
   const [updatingId, setUpdatingId] = useState("");
 
   const getToken = () =>
-    localStorage.getItem("token") ||
-    localStorage.getItem("authToken");
+    localStorage.getItem("token") || localStorage.getItem("authToken");
 
   const fetchApplications = async () => {
     setLoading(true);
@@ -80,8 +80,8 @@ export default function ReviewApplications() {
         previous.map((application) =>
           application._id === applicationId
             ? { ...application, status: data.application.status }
-            : application
-        )
+            : application,
+        ),
       );
 
       alert("Application status updated successfully!");
@@ -106,8 +106,7 @@ export default function ReviewApplications() {
   const getCompanyName = (placement) =>
     placement?.companyName || "Company unavailable";
 
-  const getJobRole = (placement) =>
-    placement?.jobRole || "Role unavailable";
+  const getJobRole = (placement) => placement?.jobRole || "Role unavailable";
 
   if (loading) {
     return <div style={styles.message}>Loading applications...</div>;
@@ -135,9 +134,7 @@ export default function ReviewApplications() {
       {error && <p style={styles.error}>{error}</p>}
 
       {applications.length === 0 ? (
-        <div style={styles.empty}>
-          No applications found yet.
-        </div>
+        <div style={styles.empty}>No applications found yet.</div>
       ) : (
         <div style={styles.list}>
           {applications.map((application) => {
@@ -148,9 +145,7 @@ export default function ReviewApplications() {
               <div key={application._id} style={styles.card}>
                 <div style={styles.cardHeader}>
                   <div>
-                    <h3 style={styles.company}>
-                      {getCompanyName(placement)}
-                    </h3>
+                    <h3 style={styles.company}>{getCompanyName(placement)}</h3>
                     <p style={styles.role}>{getJobRole(placement)}</p>
                   </div>
 
@@ -192,9 +187,7 @@ export default function ReviewApplications() {
 
                   <div style={styles.coverLetter}>
                     <strong>Cover Letter:</strong>
-                    <p>
-                      {application.coverLetter || "Not provided"}
-                    </p>
+                    <p>{application.coverLetter || "Not provided"}</p>
                   </div>
                 </div>
 
@@ -219,9 +212,7 @@ export default function ReviewApplications() {
                     ))}
                   </select>
 
-                  {updatingId === application._id && (
-                    <span>Updating...</span>
-                  )}
+                  {updatingId === application._id && <span>Updating...</span>}
                 </div>
               </div>
             );
